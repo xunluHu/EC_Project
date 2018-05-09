@@ -1,0 +1,90 @@
+body {
+    font-family: Arial;
+    font-size: 12px;
+    min-width: 1024px;
+    height: 100%;
+}
+
+nav.top {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #e7e7e7;
+}
+
+nav.top span {
+    margin-right: 20px;
+}
+
+nav.top span, nav.top a {
+    color: #999;
+    margin: 0px 10px 0px 10px;
+}
+
+nav.top {
+    background-color: #f2f2f2;
+}
+
+nav.top div.row div {
+    margin: 5px 0px;
+}
+
+div.footer {
+    position:fixed;
+    bottom:0;
+    height: 100px;
+    width: 100%;
+    margin: 0;
+    background: #0f0f0f;
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-top-color: #e7e7e7;
+    display: block;
+}
+
+div.footer p {
+    font-family: Arial;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    text-align:center;
+    margin: 20px 0px 0px 0px;
+}
+
+div.searchDiv {
+    background-color: #4cae4c;
+    width: 400px;
+    margin: 20px auto;
+    padding: 1px;
+    height: 40px;
+    display: block;
+}
+
+div.searchDiv input {
+    width: 275px;
+    border: 1px solid transparent;
+    height: 36px;
+    margin: 1px;
+    outline:none;
+}
+
+div.searchDiv button {
+    width: 115px;
+    height: 38px;
+    border: 1px solid transparent;
+    background-color: #4cae4c;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    vertical-align: bottom;
+}
+nav a{
+    color: #999;
+}
+
+nav.top a:hover {
+    color: #4cae4c;
+    text-decoration: none;
+}
+
