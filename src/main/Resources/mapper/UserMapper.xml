@@ -5,6 +5,12 @@
 
 <mapper namespace="com.xunluyaoyao.web.mapper.UserMapper">
     <select id="list" resultType="User">
-        select * from users where username = ${name} and userpassword = ${password}  order by id desc
+        select * from users where username = #{name} and userpassword = #{password}  order by id desc
     </select>
+    <select id="listName" resultType="User">
+        select * from users where username = #{name}
+    </select>
+    <insert id="add" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into users (username, userpassword) values(#{name}, #{password})
+    </insert>
 </mapper>

@@ -16,7 +16,7 @@
     <junit.version>4.12</junit.version>
     <jstl.version>1.2</jstl.version>
     <jsqlparser.version>1.0</jsqlparser.version>
-    <jackson.version>1.2.7</jackson.version>
+    <jackson.version>2.8.8</jackson.version>
     <servlet-api.version>3.1.0</servlet-api.version>
     <druid.version>1.0.18</druid.version>
     <log4j.version>1.2.16</log4j.version>
@@ -95,6 +95,25 @@
       <artifactId>spring-aspects</artifactId>
       <version>${spring.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
     <!-- JSP相关 -->
     <dependency>
       <groupId>jstl</groupId>
