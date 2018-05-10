@@ -33,7 +33,7 @@ nav.top div.row div {
 div.footer {
     position:fixed;
     bottom:0;
-    height: 100px;
+    height: 85px;
     width: 100%;
     margin: 0;
     background: #0f0f0f;
@@ -88,3 +88,92 @@ nav.top a:hover {
     text-decoration: none;
 }
 
+div.categoryWithCarousel{
+    width: 100%;
+    position: relative;
+}
+div.categoryWithCarousel div.headBar{
+    background-color:#4cae4c;
+}
+div.categoryWithCarousel div.head{
+    width: 200px;
+    background-color: #3c763d;
+    height: 36px;
+    line-height: 36px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    margin-left: 300px;
+    display: inline-block;
+}
+
+div.categoryWithCarousel div.rightMenu{
+    display: inline-block;
+}
+div.categoryWithCarousel div.rightMenu a{
+    font-size: 16px;
+    color: white;
+    text-decoration:none;
+}
+div.categoryWithCarousel div.rightMenu span{
+    margin: 0px 20px 0px 20px;
+}
+
+/*细分目录*/
+div.categoryMenu{
+    width: 200px;
+    background-color: #e2e2e3;
+    margin-left: 300px;
+    position: absolute;
+    left: 0;
+    top: 36px;
+    z-index: 1;
+    display: none;
+}
+div.categoryMenu a{
+    color: #000;
+}
+div.categoryMenu a:hover{
+    color: lightskyblue;
+    text-decoration: none;
+}
+div.productsAsideCategorys{
+    width: 1000px;
+    height: 500px;
+    background-color: white;
+    display: none;
+    margin-left: 500px;
+    position: absolute;
+    left: 0;
+    top: 36px;
+    z-index: 1;
+}
+div.productsAsideCategorys div.row{
+    margin: 20px 80px 0px 80px;
+}
+div.productsAsideCategorys div.row div.seperator{
+    margin-top: 20px;
+    border-bottom-style: dashed;
+    border-bottom-width: 1px;
+    border-bottom-color: #e7e7e7;
+}
+div.productsAsideCategorys a{
+    color: #999;
+    font-size: 14px;
+    margin: 8px;
+}
+div.productsAsideCategorys a:hover{
+    color: #C40000;
+    text-decoration: none;
+}
+div.eachCategory{
+    line-height: 30px;
+    padding-left: 10px;
+    font-size: 14px;
+}
+div.eachCategory span{
+    margin-right: 10px;
+}
+div.eachCategory:hover{
+    background-color: white;
+}

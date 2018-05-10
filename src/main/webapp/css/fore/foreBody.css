@@ -21,7 +21,7 @@
 }
 .carousel figure {
     margin: 0;
-    width: 50%;
+    width: 900px;
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
     -webkit-transition: -webkit-transform 0.5s;
@@ -30,7 +30,7 @@
     transition: transform 0.5s, -webkit-transform 0.5s;
 }
 .carousel figure img {
-    width: 100%;
+    width: 900px;
     box-sizing: border-box;
     padding: 0 0px;
 }
@@ -177,3 +177,4 @@
     -webkit-transform: translateX(-50%) rotate(-45deg);
     transform: translateX(-50%) rotate(-45deg);
 }
+
