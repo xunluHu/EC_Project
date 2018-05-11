@@ -7,9 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -19,15 +23,24 @@ import java.util.List;
 public class UserController {
     @Autowired
     UserService userService;
-
+    //这个版本require不设置成false通讯异常
     @RequestMapping("/user_login")
-    public void list(Model model, User user, HttpServletResponse response)  throws IOException {
-        List<User> us = userService.list(user);            response.setHeader("Content-Type", "text/html;charset=utf-8");
+    public void list(Model model, User user, @RequestParam(value="isChecked",required = false) boolean isRemember,
+                     HttpServletResponse response, HttpSession session)  throws IOException {
+        response.setHeader("Content-Type", "text/html;charset=utf-8");
+        List<User> us = userService.list(user);
         PrintWriter out = response.getWriter();
         if( us.size() == 0) {
             out.print("failure");
         } else {
             //TODO：如果有那么带着成功登录的信息去首页
+            session.setAttribute("user", user);
+            if (isRemember) {
+                Cookie token = new Cookie("token", user.getName());
+                token.setMaxAge(60 * 60 * 24 * 7);
+                token.setPath("/");
+                response.addCookie(token);
+            }
             out.print("success");
         }
     }

@@ -16,13 +16,13 @@
     </a>
 
     <c:if test="${!empty user}">
-        <a href="loginPage">${user.name}</a>
+        <a href="/html/login.html">${user.name}</a>
         <a href="forelogout">退出</a>
     </c:if>
 
     <c:if test="${empty user}">
-        <a href="loginPage">登录</a>
-        <a href="registerPage">注册</a>
+        <a href="/html/login.html">登录</a>
+        <a href="/html/login.html">注册</a>
     </c:if>
 
 
