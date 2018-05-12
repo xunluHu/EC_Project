@@ -178,3 +178,65 @@ div.eachCategory:hover{
     background-color: white;
 }
 
+/*分类界面样式*/
+div.categoryPageDiv{
+    max-width: 1013px;
+    margin: 10px auto;
+}
+div.categoryProducts{
+    padding: 0px 20px 40px 20px;
+}
+div.productUnit{
+    width: 225px;
+    height: 338px;
+    border: 3px solid #fff;
+    background-color: white;
+    margin: 12px 5px;
+    float: left;
+}
+div.productUnit:hover{
+    border:3px solid #4cae4c;
+}
+div.productUnitFrame{
+    border:1px solid #eee;
+    height:100%;
+}
+div.productUnitFrame:hover{
+    border:1px solid #4cae4c;
+}
+div.productUnit img.productImage{
+    width: 100%;
+    height: 190px;
+}
+div.productUnit span.productPrice{
+    font-size: 20px;
+    color: #3c763d;
+    display: block;
+    padding-left: 4px;
+}
+div.productUnit a.productLink{
+    margin: 10px 0px;
+    color: #333333;
+    display: block;
+    height:34px;
+}
+div.productUnit a.productLink:hover{
+    text-decoration: underline;
+    color: #4cae4c;
+}
+div.productUnit a.xunluLink{
+    margin: 10px 0px;
+    color: #999999;
+    display:block;
+    text-decoration: underline;
+}
+div.productUnit a.xunluLink:hover{
+    text-decoration: underline;
+    color: #4cae4c;
+}
+div.productUnit div.productInfo{
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #EEEEEE;
+    color:#999999;
+}

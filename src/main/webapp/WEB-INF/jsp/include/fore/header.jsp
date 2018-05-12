@@ -20,7 +20,7 @@
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <script src="js/fore/fore.js"></script>
-    <link href="css/fore/foreStyle.css" rel="stylesheet">
+    <link href="css/fore/foreStyle1.css" rel="stylesheet">
     <link href="css/fore/foreBody.css" rel="stylesheet">
     <script>
         function formatMoney(num){

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ProductMapper {
     public List<Product> selectById(int cid);
+
+    public List<Product> selectByContext(String context);
 }

@@ -19,7 +19,7 @@
 
 <div class="categoryPageDiv">
     <div class="categoryProducts">
-        <c:forEach items="${c.products}" var="p" varStatus="stc">
+        <c:forEach items="${products}" var="p" varStatus="stc">
             <c:if test="${stc.count<=categorycount}">
                 <div class="productUnit" price="${p.promotePrice}">
                     <div class="productUnitFrame">

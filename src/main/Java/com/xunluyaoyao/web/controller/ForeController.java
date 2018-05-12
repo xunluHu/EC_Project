@@ -3,6 +3,7 @@ package com.xunluyaoyao.web.controller;
 import com.xunluyaoyao.web.pojo.Category;
 import com.xunluyaoyao.web.pojo.User;
 import com.xunluyaoyao.web.service.CategoryService;
+import com.xunluyaoyao.web.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class foreController {
+public class ForeController {
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    ProductService productService;
 
     @RequestMapping("forehome")
     public String home(Model model, HttpSession session, HttpServletRequest request) {
@@ -48,9 +51,15 @@ public class foreController {
     }
 
     @RequestMapping("Category")
-    public String home(Model model, int id) {
+    public String categoryMove(Model model, int id) {
         Category category = categoryService.selectByPrimaryKey(id);
         model.addAttribute("c", category);
         return "fore/category";
+    }
+
+    @RequestMapping("productSearch")
+    public String productSearch(Model model, String context) {
+        model.addAttribute("products", productService.selectByContext(context));
+        return "fore/productSearch";
     }
 }

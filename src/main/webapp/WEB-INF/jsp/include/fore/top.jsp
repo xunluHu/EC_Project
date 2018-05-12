@@ -10,7 +10,7 @@
          pageEncoding="UTF-8" isELIgnored="false"%>
 
 <nav class="top ">
-    <a href="${contextPath}">
+    <a href="/">
         <span style="color: #4cae4c; margin: 0px;"class="glyphicon glyphicon-tree-deciduous"></span>
         驯鹿首页
     </a>

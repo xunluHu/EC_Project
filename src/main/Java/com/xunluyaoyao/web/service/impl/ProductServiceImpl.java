@@ -16,4 +16,9 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> selectById(int cid) {
         return productMapper.selectById(cid);
     }
+
+    @Override
+    public List<Product> selectByContext(String context) {
+        return productMapper.selectByContext(context);
+    }
 }

@@ -5,6 +5,10 @@
 
 <mapper namespace="com.xunluyaoyao.web.mapper.ProductMapper">
     <select id="selectById" parameterType="Integer" resultType="Product">
-        select * from product where cid=#{id} order by id desc
+        select * from product where cid=#{id}
+    </select>
+
+    <select id="selectByContext" parameterType="String" resultType="Product">
+        select * from product where name like CONCAT('%',#{context},'%') or subTitle like CONCAT('%',#{context},'%')
     </select>
 </mapper>
