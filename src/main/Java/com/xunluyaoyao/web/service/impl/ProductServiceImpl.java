@@ -13,12 +13,17 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductMapper productMapper;
     @Override
-    public List<Product> selectById(int cid) {
-        return productMapper.selectById(cid);
+    public List<Product> selectByCategoryId(int cid) {
+        return productMapper.selectByCategoryId(cid);
     }
 
     @Override
     public List<Product> selectByContext(String context) {
         return productMapper.selectByContext(context);
+    }
+
+    @Override
+    public Product selectById(int id) {
+        return productMapper.selectById(id);
     }
 }

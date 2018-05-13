@@ -6,7 +6,7 @@
 <mapper namespace="com.xunluyaoyao.web.mapper.CategoryMapper">
     <resultMap type="Category" id="categoryBean">
         <id property="id" column="id"/>
-        <collection property="products" column="id" select="com.xunluyaoyao.web.mapper.ProductMapper.selectById">
+        <collection property="products" column="id" select="com.xunluyaoyao.web.mapper.ProductMapper.selectByCategoryId">
         </collection>
     </resultMap>
 

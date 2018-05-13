@@ -4,11 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.xunluyaoyao.web.mapper.ProductMapper">
-    <select id="selectById" parameterType="Integer" resultType="Product">
-        select * from product where cid=#{id}
+    <select id="selectByCategoryId" parameterType="Integer" resultType="Product">
+        select * from product where cid=#{cid}
     </select>
 
     <select id="selectByContext" parameterType="String" resultType="Product">
         select * from product where name like CONCAT('%',#{context},'%') or subTitle like CONCAT('%',#{context},'%')
+    </select>
+
+    <select id="selectById" parameterType="Integer" resultType="Product">
+        select * from product where id=#{id}
     </select>
 </mapper>

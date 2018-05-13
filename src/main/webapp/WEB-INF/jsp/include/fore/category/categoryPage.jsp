@@ -23,7 +23,7 @@
             <c:if test="${stc.count<=categorycount}">
                 <div class="productUnit" price="${p.promotePrice}">
                     <div class="productUnitFrame">
-                        <a href="foreproduct?pid=${p.id}">
+                        <a href="foreProduct?pid=${p.id}">
                             <%--<img class="productImage" src="img/productSingle_middle/${p.productImage.id}.jpg">--%>
                             <img class="productImage" src="/images/productImage/book.jpg">
                         </a>

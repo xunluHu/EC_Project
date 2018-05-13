@@ -1,6 +1,7 @@
 package com.xunluyaoyao.web.controller;
 
 import com.xunluyaoyao.web.pojo.Category;
+import com.xunluyaoyao.web.pojo.Product;
 import com.xunluyaoyao.web.pojo.User;
 import com.xunluyaoyao.web.service.CategoryService;
 import com.xunluyaoyao.web.service.ProductService;
@@ -61,5 +62,12 @@ public class ForeController {
     public String productSearch(Model model, String context) {
         model.addAttribute("products", productService.selectByContext(context));
         return "fore/productSearch";
+    }
+
+    @RequestMapping("foreProduct")
+    public String productPage(Model model, Integer pid) {
+        System.out.println("id value is" + pid);
+        model.addAttribute("p", productService.selectById(pid));
+        return "fore/product";
     }
 }
