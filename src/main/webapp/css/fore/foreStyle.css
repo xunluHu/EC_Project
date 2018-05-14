@@ -280,6 +280,7 @@ div.buyDiv button{
 }
 
 button.buyButton{
+    position: relative;
     border: 1px solid #2aabd2;
     background-color: #FFEDED;
     text-align: center;
@@ -288,10 +289,29 @@ button.buyButton{
     color: #2aabd2;
     font-family: arial;
     float: left;
+    left: -20px;
+    margin: 18px auto;
+}
+div.buyDiv span.reduce, span.add{
+    color: white;
+    font-size: 20px;
     margin: 10px auto;
 }
+div.buyDiv input.count-input {
+    width: 20px;
+}
 
+div.buyDiv div.calculateArea {
+    position: relative;
+    left: 20px;
+    top: 20px;
+}
+
+div.buyDiv .add:hover, div.buyDiv .reduce:hover{
+    color:#f50;z-index:3;border-color:#f60;cursor:pointer;
+}
 button.cartButton{
+    position: relative;
     border: 1px solid #FFEDED;
     background-color: #2aabd2;
     text-align: center;
@@ -300,7 +320,8 @@ button.cartButton{
     color: white;
     font-family: arial;
     float: right;
-    margin: 10px 10px 0px 10px;
+    right: -10px;
+    margin: -10px 0px 0px 0px;
 }
 
 /*购物车样式*/

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xunluyaoyao.web.mapper.OrderItemMapper">
+    <insert id="add" parameterType="OrderItem">
+        insert into orderitem(pid, uid, number) values(#{pid}, #{uid}, #{number})
+    </insert>
+    <select id="selectByPidAndUid" parameterType="OrderItem" resultType="OrderItem">
+        select * from orderitem where pid = #{pid} and uid = #{uid}
+    </select>
+    <update id="update" parameterType="OrderItem">
+        update orderitem set number = #{number} where pid = #{pid} and uid = #{uid}
+    </update>
+
+    <resultMap type="OrderItem" id="orderItemBean">
+        <id property="id" column="id"/>
+        <result property="pid" column="pid"/>
+        <result property="uid" column="uid"/>
+        <result property="number" column="number"/>
+        <association property="product" column="pid" select="com.xunluyaoyao.web.mapper.ProductMapper.selectById"/>
+    </resultMap>
+    <select id="selectByUid" parameterType="Integer" resultMap="orderItemBean">
+        select * from orderitem where uid = #{uid}
+    </select>
+
+    <delete id="deleteById" parameterType="OrderItem">
+        delete from orderitem where pid = #{pid} and uid = #{uid}
+    </delete>
+</mapper>

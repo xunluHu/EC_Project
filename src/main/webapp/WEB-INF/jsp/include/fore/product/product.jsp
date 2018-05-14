@@ -16,20 +16,52 @@
     <div class="separator">致我们的星辰大海---￥${p.originalPrice}</div>
     <img class="productDetailImage" src="/images/productImage/ship.jpg">
     <div class="buyDiv">
-        <a class="buyLink" href="">
-            <button class="buyButton">立即获取</button>
-        </a>
-        <a class="putCartLink" href="">
-            <button class="cartButton">
-                <span class="glyphicon glyphicon-shopping-cart"></span>
-                加入购物车
-            </button>
-        </a>
+        <button class="buyButton">立即获取</button>
+        <div class="calculateArea">
+            <span class="reduce">-</span>
+            <input class="count-input" type="text" value="1" maxLength="2" disabled="true"/>
+            <span class="add">+</span>
+        </div>
+        <button class="cartButton">
+            <span class="glyphicon glyphicon-shopping-cart"></span>
+            加入购物车
+        </button>
     </div>
 
 </div>
 
 <script>
+    $("div.calculateArea .add").click(function () {
+        console.log("$(\"div.calculateArea .count-input\").val() ", parseInt($("div.calculateArea .count-input").val()) + 1)
+        if ($("div.calculateArea .count-input").val() < 99) {
+            $("div.calculateArea .count-input").val((parseInt($("div.calculateArea .count-input").val()) + 1).toString());
+        }
+    })
+    $("div.calculateArea .reduce").click(function () {
+        console.log("$(\"div.calculateArea .count-input\").val() ", parseInt($("div.calculateArea .count-input").val()) + 1)
+        if ($("div.calculateArea .count-input").val() > 1) {
+            $("div.calculateArea .count-input").val((parseInt($("div.calculateArea .count-input").val()) - 1).toString());
+        }
+    })
+    $(document).ready($("button.cartButton").click(function () {
+        $.post("/user_checkLogin", function (result) {
+            if (result == "success") {
+                $.post(
+                    "/addCart",
+                    {pid: ${p.id},number: $("div.calculateArea .count-input").val()},
+                    function (result) {
+                        if (result == "success") {
+                            alert("添加进购物车");
+                        } else {
+                            alert("添加失败")
+                        }
+                    }
+                )
+            } else {
+                alert("请登录");
+            }
+        })
+    }));
     //特效
     "use strict";
     var canvas = document.getElementById('starryCanvas'),
@@ -41,9 +73,8 @@
         stars = [],
         count = 0,
         maxStars = 1300;//星星数量
-    $(window).resize( function () {
+    $(window).resize(function () {
         w = canvas.width = window.innerWidth, h = canvas.height = window.innerHeight - 100;
-        console.log("windows resize")
     });
 
     var canvas2 = document.createElement('canvas'),

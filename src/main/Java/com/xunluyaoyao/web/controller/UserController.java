@@ -34,7 +34,7 @@ public class UserController {
             out.print("failure");
         } else {
             //TODO：如果有那么带着成功登录的信息去首页
-            session.setAttribute("user", user);
+            session.setAttribute("user", us.get(0));
             if (isRemember) {
                 Cookie token = new Cookie("token", user.getName());
                 token.setMaxAge(60 * 60 * 24 * 7);
@@ -58,5 +58,16 @@ public class UserController {
             user.setName("");
         }
         return user;
+    }
+
+    @RequestMapping("/user_checkLogin")
+    @ResponseBody
+    public void checkLogin(HttpSession session, HttpServletResponse response) throws IOException{
+        PrintWriter out = response.getWriter();
+        if(session.getAttribute("user") != null) {
+            out.write("success");
+        } else {
+            out.write("error");
+        }
     }
 }

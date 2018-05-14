@@ -7,6 +7,9 @@
     <select id="list" resultType="User">
         select * from users where name = #{name} and password = #{password}  order by id desc
     </select>
+    <select id="getByName" parameterType="String" resultType="User">
+        select * from users where name = #{name}
+    </select>
     <select id="listName" resultType="User">
         select * from users where name = #{name}
     </select>

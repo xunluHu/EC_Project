@@ -1,10 +1,13 @@
 package com.xunluyaoyao.web.controller;
 
 import com.xunluyaoyao.web.pojo.Category;
+import com.xunluyaoyao.web.pojo.OrderItem;
 import com.xunluyaoyao.web.pojo.Product;
 import com.xunluyaoyao.web.pojo.User;
 import com.xunluyaoyao.web.service.CategoryService;
+import com.xunluyaoyao.web.service.OrderItemService;
 import com.xunluyaoyao.web.service.ProductService;
+import com.xunluyaoyao.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +17,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class ForeController {
@@ -21,6 +25,10 @@ public class ForeController {
     CategoryService categoryService;
     @Autowired
     ProductService productService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    OrderItemService orderItemService;
 
     @RequestMapping("forehome")
     public String home(Model model, HttpSession session, HttpServletRequest request) {
@@ -30,8 +38,7 @@ public class ForeController {
             if (cookies != null) {
                 for (Cookie cookie : cookies) {
                     if (cookie.getName().contains("token")) {
-                        user = new User();
-                        user.setName(cookie.getValue());
+                        user = userService.getByName(cookie.getValue());
                         session.setAttribute("user", user);
                     }
                 }
@@ -72,7 +79,13 @@ public class ForeController {
     }
 
     @RequestMapping("foreCart")
-    public String fortCart(Model model) {
+    public String fortCart(Model model, HttpSession session) {
+        User user = (User)session.getAttribute("user");
+        if(user == null) {
+            return "redirect:/html/login.html";
+        }
+        List<OrderItem> listOrder = orderItemService.selectByUid(user.getId());
+        model.addAttribute("os", listOrder);
         return "fore/cart";
     }
 }

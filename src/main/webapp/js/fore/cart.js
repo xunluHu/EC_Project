@@ -5,7 +5,7 @@ window.onload = function () {
             var els = document.getElementsByTagName('*');
             for (var i = 0, len = els.length; i < len; i++) {
 
-                if (els[i].className.indexOf(cls + ' ') >=0 || els[i].className.indexOf(' ' + cls + ' ') >=0 || els[i].className.indexOf(' ' + cls) >=0) {
+                if (els[i].className.indexOf(cls + ' ') >= 0 || els[i].className.indexOf(' ' + cls + ' ') >= 0 || els[i].className.indexOf(' ' + cls) >= 0) {
                     ret.push(els[i]);
                 }
             }
@@ -62,13 +62,13 @@ window.onload = function () {
         //如果数目只有一个，把-号去掉
         if (countInput.value == 1) {
             span.innerHTML = '';
-        }else{
+        } else {
             span.innerHTML = '-';
         }
     }
 
     // 点击选择框
-    for(var i = 0; i < selectInputs.length; i++ ){
+    for (var i = 0; i < selectInputs.length; i++) {
         selectInputs[i].onclick = function () {
             if (this.className.indexOf('check-all') >= 0) { //如果是全选，则吧所有的选择框选中
                 for (var j = 0; j < selectInputs.length; j++) {
@@ -95,8 +95,8 @@ window.onload = function () {
     selectedViewList.onclick = function (e) {
         var e = e || window.event;
         var el = e.srcElement;
-        if (el.className=='del') {
-            var input =  tr[el.getAttribute('index')].getElementsByTagName('input')[0]
+        if (el.className == 'del') {
+            var input = tr[el.getAttribute('index')].getElementsByTagName('input')[0]
             input.checked = false;
             input.onclick();
         }
@@ -126,9 +126,22 @@ window.onload = function () {
                 case 'delete': //点击了删除
                     var conf = confirm('确定删除此商品吗？');
                     if (conf) {
-                        this.parentNode.removeChild(this);
-                        calculateFooterHeight();
+                        var pid = (this.getElementsByTagName('input')[2].value);
+                        $.post(
+                            "/deleteProduct",
+                            {pid: pid},
+                            function (result) {
+                                if (result == "success") {
+                                    alert("删除成功")
+                                } else {
+                                    alert("删除失败")
+                                    return false;
+                                }
+                            }
+                        )
                     }
+                    this.parentNode.removeChild(this);
+                    calculateFooterHeight();
                     break;
             }
             getTotal();
@@ -152,13 +165,30 @@ window.onload = function () {
         if (selectedTotal.innerHTML != 0) {
             var con = confirm('确定删除所选商品吗？'); //弹出确认框
             if (con) {
+                var pidArray = new Array();
                 for (var i = 0; i < tr.length; i++) {
                     // 如果被选中，就删除相应的行
                     if (tr[i].getElementsByTagName('input')[0].checked) {
+                        //把需要删除的元素存放进数组之中
+                        pidArray.push(tr[i].getElementsByTagName('input')[2].value);
                         tr[i].parentNode.removeChild(tr[i]); // 删除相应节点
                         i--; //回退下标位置
                     }
                 }
+                $.ajax({
+                    url: "/deleteProducts",
+                    type: "Post",
+                    data: JSON.stringify({pidArray: pidArray}),
+                    content: "application/json",
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("删除成功");
+                        }
+                    },
+                    error: function () {
+                        alert("删除失败");
+                    }
+                });
             }
         } else {
             alert('请选择商品！');

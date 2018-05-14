@@ -21,19 +21,25 @@
             <th>操作</th>
         </tr>
         </thead>
+        <c:if test="${!empty os}">
         <tbody>
-        <tr>
-            <td class="checked"><input class="check-one check" type="checkbox"/></td>
-            <td class="goods"><img src="/images/productImage/ship.jpg" alt=""/><span>某江英语</span></td>
-            <td class="price">5999.88</td>
-            <td class="count"><span class="reduce"></span><input class="count-input" type="text" value="1"/><span
-                    class="add">+</span></td>
-            <td class="subtotal">5999.88</td>
-            <td class="operation"><span class="delete">删除</span></td>
-        </tr>
+            <c:forEach items="${os}" var="o" varStatus="stc">
+                <tr>
+                    <td class="checked"><input class="check-one check" type="checkbox"/></td>
+                    <td class="goods"><img src="/images/productImage/ship.jpg" alt=""/><span>${o.product.name}</span></td>
+                    <td class="cartProductPrice">${o.product.originalPrice}</td>
+                    <td class="count">
+                        <span class="reduce"></span>
+                        <input class="count-input" type="text" value=${o.number}></input>
+                        <span class="add">+</span></td>
+                    <td class="subtotal" >${o.subTotal}</td>
+                    <td class="operation"><span class="delete">删除</span></td>
+                    <td class="pid" hidden="hidden"><input type="text" value=${o.product.id}></input></td>
+                </tr>
+            </c:forEach>
         </tbody>
+        </c:if>
     </table>
-
     <div class="foot" id="foot">
         <label class="fl select-all"><input type="checkbox" class="check-all check"/>&nbsp;全选</label>
         <a class="fl delete" id="deleteAll" href="javascript:;">删除</a>
