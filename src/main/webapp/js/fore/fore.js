@@ -136,3 +136,29 @@ function carousel(root) {
         }
     )
 }
+
+//使用js代码自动计算需要插入的高让footer沉底
+$(function () {
+    if ($("body").height() < $(window).height()) {
+        $("div.footerBottom").css("height", $(window).height() - $("body").height())
+    }
+})
+
+function calculateFooterHeight() {
+    if ($("body").height() <= $(window).height()) {
+        $("div.footerBottom").css("height", parseInt($("div.footerBottom").css("height")) + $(window).height() - $("body").height())
+    } else {
+        $("div.footerBottom").css("height", parseInt($("div.footerBottom").css("height")) - ($("body").height() - $(window).height()))
+    }
+}
+
+//当多屏切换或者窗口大小改变时自动计算
+$(window).resize(function () {
+        if ($("body").height() <= $(window).height()) {
+            $("div.footerBottom").css("height", parseInt($("div.footerBottom").css("height")) + $(window).height() - $("body").height())
+        } else {
+            $("div.footerBottom").css("height", parseInt($("div.footerBottom").css("height")) - ($("body").height() - $(window).height()))
+        }
+    }
+)
+

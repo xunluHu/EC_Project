@@ -70,4 +70,9 @@ public class ForeController {
         model.addAttribute("p", productService.selectById(pid));
         return "fore/product";
     }
+
+    @RequestMapping("foreCart")
+    public String fortCart(Model model) {
+        return "fore/cart";
+    }
 }

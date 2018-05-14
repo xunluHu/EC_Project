@@ -9,7 +9,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" isELIgnored="false" %>
 
-<canvas id="starryCanvas" style="position: absolute; z-index: -1;"></canvas>
+<canvas id="starryCanvas" style="position: absolute; z-index: -1; "></canvas>
 <div class="productContext">
     <div class="productTitle">${p.name}</div>
     <div class="productSubTitle">${p.subTitle}</div>
@@ -35,12 +35,16 @@
     var canvas = document.getElementById('starryCanvas'),
         ctx = canvas.getContext('2d'),
         w = canvas.width = window.innerWidth,
-        h = canvas.height = window.innerHeight,
-
+        //100是top和footer的高度之和
+        h = canvas.height = window.innerHeight - 100,
         hue = 217,
         stars = [],
         count = 0,
         maxStars = 1300;//星星数量
+    $(window).resize( function () {
+        w = canvas.width = window.innerWidth, h = canvas.height = window.innerHeight - 100;
+        console.log("windows resize")
+    });
 
     var canvas2 = document.createElement('canvas'),
         ctx2 = canvas2.getContext('2d');
