@@ -20,8 +20,10 @@
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <script src="js/fore/fore.js"></script>
-    <link href="css/fore/foreStyle.css" rel="stylesheet">
+    <script src="js/fore/modernizr.custom.js"></script>
+    <link href="css/fore/foreStyle1.css" rel="stylesheet">
     <link href="css/fore/foreBody.css" rel="stylesheet">
+    <link href="css/record/record.css" rel="stylesheet">
     <script>
         function formatMoney(num){
             num = num.toString().replace(/\$|\,/g,'');
@@ -47,41 +49,6 @@
             }
             return true;
         }
-
-
-        $(function(){
-
-
-            $("a.productDetailTopReviewLink").click(function(){
-                $("div.productReviewDiv").show();
-                $("div.productDetailDiv").hide();
-            });
-            $("a.productReviewTopPartSelectedLink").click(function(){
-                $("div.productReviewDiv").hide();
-                $("div.productDetailDiv").show();
-            });
-
-            $("span.leaveMessageTextareaSpan").hide();
-            $("img.leaveMessageImg").click(function(){
-
-                $(this).hide();
-                $("span.leaveMessageTextareaSpan").show();
-                $("div.orderItemSumDiv").css("height","100px");
-            });
-
-            $("div#footer a[href$=#nowhere]").click(function(){
-            });
-
-            $("a.wangwanglink").click(function(){
-            });
-
-            $("a.notImplementLink").click(function(){
-
-            });
-
-
-        });
-
     </script>
 </head>
 

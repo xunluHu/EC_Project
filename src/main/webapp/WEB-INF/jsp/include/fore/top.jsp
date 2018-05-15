@@ -27,7 +27,7 @@
 
 
     <span class="pull-right">
-			<a href="forebought">我的订单</a>
+			<a href="record">获取记录</a>
 			<a href="foreCart">
 			<span style="color:#4cae4c; margin:0px" class=" glyphicon glyphicon-shopping-cart redColor"></span>
 			购物车<strong>${cartTotalItemNumber}</strong>件</a>

@@ -196,7 +196,6 @@ window.onload = function () {
         getTotal(); //更新总数
         calculateFooterHeight();
     }
-
     // 默认全选
     checkAllInputs[0].checked = true;
     checkAllInputs[0].onclick();

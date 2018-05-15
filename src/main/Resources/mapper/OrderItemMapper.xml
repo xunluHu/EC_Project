@@ -8,10 +8,10 @@
         insert into orderitem(pid, uid, number) values(#{pid}, #{uid}, #{number})
     </insert>
     <select id="selectByPidAndUid" parameterType="OrderItem" resultType="OrderItem">
-        select * from orderitem where pid = #{pid} and uid = #{uid}
+        select * from orderitem where pid = #{pid} and uid = #{uid} and ISNULL(oid)
     </select>
     <update id="update" parameterType="OrderItem">
-        update orderitem set number = #{number} where pid = #{pid} and uid = #{uid}
+        update orderitem set number = #{number} where pid = #{pid} and uid = #{uid} and ISNULL(oid)
     </update>
 
     <resultMap type="OrderItem" id="orderItemBean">
@@ -22,10 +22,23 @@
         <association property="product" column="pid" select="com.xunluyaoyao.web.mapper.ProductMapper.selectById"/>
     </resultMap>
     <select id="selectByUid" parameterType="Integer" resultMap="orderItemBean">
-        select * from orderitem where uid = #{uid}
+        select * from orderitem where uid = #{uid} and ISNULL(oid)
+    </select>
+
+    <select id="selectByUidInCart" parameterType="Integer" resultMap="orderItemBean">
+        select * from orderitem where uid = #{uid} and ISNULL(oid)
     </select>
 
     <delete id="deleteById" parameterType="OrderItem">
-        delete from orderitem where pid = #{pid} and uid = #{uid}
+        delete from orderitem where pid = #{pid} and uid = #{uid} and ISNULL(oid)
     </delete>
+
+
+    <update id="updateOidAndNumber" parameterType="OrderItem">
+        update orderitem set number = #{number}, oid = #{oid} where pid = #{pid} and uid = #{uid} and ISNULL(oid)
+    </update>
+
+    <select id="selectByOid" parameterType="Integer" resultMap="orderItemBean">
+        select * from orderitem where oid = #{oid}
+    </select>
 </mapper>

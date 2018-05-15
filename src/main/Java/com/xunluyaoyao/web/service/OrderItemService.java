@@ -9,5 +9,8 @@ public interface OrderItemService {
     public OrderItem selectByPidAndUid(OrderItem orderItem);
     public void update(OrderItem orderItem);
     public List<OrderItem> selectByUid(Integer uid);
+    public List<OrderItem> selectByUidInCart(Integer uid);
     public void deleteById(OrderItem orderItem);
+    public void updateOidAndNumber(OrderItem orderItem);
+    public List<OrderItem> selectByOid(Integer oid);
 }

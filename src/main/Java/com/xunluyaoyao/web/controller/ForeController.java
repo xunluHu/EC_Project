@@ -1,13 +1,7 @@
 package com.xunluyaoyao.web.controller;
 
-import com.xunluyaoyao.web.pojo.Category;
-import com.xunluyaoyao.web.pojo.OrderItem;
-import com.xunluyaoyao.web.pojo.Product;
-import com.xunluyaoyao.web.pojo.User;
-import com.xunluyaoyao.web.service.CategoryService;
-import com.xunluyaoyao.web.service.OrderItemService;
-import com.xunluyaoyao.web.service.ProductService;
-import com.xunluyaoyao.web.service.UserService;
+import com.xunluyaoyao.web.pojo.*;
+import com.xunluyaoyao.web.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +23,8 @@ public class ForeController {
     UserService userService;
     @Autowired
     OrderItemService orderItemService;
+    @Autowired
+    OrderService orderService;
 
     @RequestMapping("forehome")
     public String home(Model model, HttpSession session, HttpServletRequest request) {
@@ -87,5 +83,25 @@ public class ForeController {
         List<OrderItem> listOrder = orderItemService.selectByUid(user.getId());
         model.addAttribute("os", listOrder);
         return "fore/cart";
+    }
+
+    @RequestMapping("record")
+    public String record(Model model, HttpSession session) {
+        User user = (User)session.getAttribute("user");
+        if(user == null) {
+            return "redirect:/html/login.html";
+        }
+        List<Order> orders = orderService.selectByUid(user.getId());
+//        for( Order order: orders) {
+//           System.out.println("orderCode "+ order.getOrderCode());
+//           System.out.println("mobile "+ order.getMobile());
+//           for(OrderItem orderItem : order.getOrderItems()) {
+//               System.out.println(orderItem.getProduct().getName());
+//               System.out.println(orderItem.getNumber());
+//               System.out.println(orderItem.getSubTotal());
+//           }
+//        }
+        model.addAttribute("os",orders);
+        return "fore/record";
     }
 }

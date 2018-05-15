@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xunluyaoyao.web.mapper.OrderMapper">
+    <insert id="createOrder" parameterType="Order">
+        insert into order_(orderCode, mobile, email, createDate, uid)
+        VALUES(#{orderCode}, #{mobile}, #{email}, #{createDate}, #{uid})
+    </insert>
+
+    <select id="selectByOrderCode" parameterType="Order" resultType="Order">
+        select * from order_ where orderCode = #{orderCode}
+    </select>
+
+    <resultMap type="Order" id="orderBean">
+        <id property="id" column="id"/>
+        <collection property="orderItems" column="id" select="com.xunluyaoyao.web.mapper.OrderItemMapper.selectByOid">
+        </collection>
+    </resultMap>
+
+    <select id="selectByUid" parameterType="Integer" resultMap="orderBean">
+        select * from order_ where uid = #{uid}
+    </select>
+</mapper>

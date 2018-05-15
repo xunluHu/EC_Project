@@ -36,4 +36,19 @@ public class OrderItemServiceImpl implements OrderItemService {
     public void deleteById(OrderItem orderItem) {
         orderItemMapper.deleteById(orderItem);
     }
+
+    @Override
+    public List<OrderItem> selectByUidInCart(Integer uid) {
+        return orderItemMapper.selectByUidInCart(uid);
+    }
+
+    @Override
+    public void updateOidAndNumber(OrderItem orderItem) {
+        orderItemMapper.updateOidAndNumber(orderItem);
+    }
+
+    @Override
+    public List<OrderItem> selectByOid(Integer oid) {
+        return orderItemMapper.selectByOid(oid);
+    }
 }

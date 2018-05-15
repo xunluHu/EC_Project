@@ -4,9 +4,18 @@ public class OrderItem {
     private int id;
     private int pid;
     private int uid;
+    private int oid;
     private int number;
     private Product product;
     private float subTotal;
+
+    public int getOid() {
+        return oid;
+    }
+
+    public void setOid(int oid) {
+        this.oid = oid;
+    }
 
     public float getSubTotal() {
         return this.subTotal = product != null ? product.getOriginalPrice() * number : 0;

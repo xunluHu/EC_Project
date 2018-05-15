@@ -10,4 +10,5 @@ public interface ProductMapper {
     public List<Product> selectByContext(String context);
 
     public Product selectById(int id);
+
 }
