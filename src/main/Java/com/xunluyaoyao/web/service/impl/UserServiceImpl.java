@@ -12,23 +12,29 @@ import java.util.List;
 public class UserServiceImpl implements UserService{
     @Autowired
     UserMapper userMapper;
+
     @Override
-    public List<User> list(User user) {
-        return userMapper.list(user);
+    public User getByPasswordAndName(User user) {
+        return userMapper.getByPasswordAndName(user);
     }
 
     @Override
-    public int add(User user) {
-        return userMapper.add(user);
-    }
-
-    @Override
-    public List<User> listName(User user) {
-        return userMapper.listName(user);
+    public void add(User user) {
+        userMapper.add(user);
     }
 
     @Override
     public User getByName(String name) {
         return userMapper.getByName(name);
+    }
+
+    @Override
+    public User getByCode(String code) {
+        return userMapper.getByCode(code);
+    }
+
+    @Override
+    public void setStatus(String status) {
+        userMapper.setStatus(status);
     }
 }

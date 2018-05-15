@@ -4,16 +4,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.xunluyaoyao.web.mapper.UserMapper">
-    <select id="list" resultType="User">
-        select * from users where name = #{name} and password = #{password}  order by id desc
+    <select id="getByPasswordAndName" resultType="User">
+        select * from users where name = #{name} and password = #{password} and status = "normal"
     </select>
+
     <select id="getByName" parameterType="String" resultType="User">
         select * from users where name = #{name}
     </select>
-    <select id="listName" resultType="User">
-        select * from users where name = #{name}
-    </select>
+
     <insert id="add" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-        insert into users (name, password) values(#{name}, #{password})
+        insert into users (name, password, mobile, email, verification_code)
+        values(#{name}, #{password}, #{mobile}, #{email}, #{verification_code})
     </insert>
+
+    <select id="getByCode" parameterType="String" resultType="User">
+        select * from users where verification_code = #{verification_code}
+    </select>
+    
+    <update id="setStatus" parameterType="String">
+        update users set status = "normal" where verification_code = #{verification_code}
+    </update>
 </mapper>

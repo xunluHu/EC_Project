@@ -1,7 +1,13 @@
 package com.xunluyaoyao.web.controller;
 
+import com.xunluyaoyao.web.pojo.OrderItem;
 import com.xunluyaoyao.web.pojo.User;
 import com.xunluyaoyao.web.service.UserService;
+import com.xunluyaoyao.web.utils.MailUtil;
+import com.xunluyaoyao.web.utils.TestUtil;
+import com.xunluyaoyao.web.utils.UUIDUtil;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +20,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -28,13 +35,13 @@ public class UserController {
     public void list(Model model, User user, @RequestParam(value="isChecked",required = false) boolean isRemember,
                      HttpServletResponse response, HttpSession session)  throws IOException {
         response.setHeader("Content-Type", "text/html;charset=utf-8");
-        List<User> us = userService.list(user);
+        User res = userService.getByPasswordAndName(user);
         PrintWriter out = response.getWriter();
-        if( us.size() == 0) {
+        if(res == null) {
             out.print("failure");
         } else {
             //TODO：如果有那么带着成功登录的信息去首页
-            session.setAttribute("user", us.get(0));
+            session.setAttribute("user", res);
             if (isRemember) {
                 Cookie token = new Cookie("token", user.getName());
                 token.setMaxAge(60 * 60 * 24 * 7);
@@ -47,17 +54,41 @@ public class UserController {
 
     @RequestMapping("/user_register")
     @ResponseBody
-    public User add(User user) {
-        //数据库的username设置unique约束直接插入会抛出异常
-        System.out.println(user.getName() + " " + user.getPassword());
-        List<User> us = userService.listName(user);
-        if (us.size() == 0) {
-            userService.add(user);
-        } else {
-            System.out.println("有同名用户不允许插入");
-            user.setName("");
+    public void add(HttpSession session, HttpServletResponse response, HttpServletRequest request) throws IOException{
+        PrintWriter out = response.getWriter();
+        BufferedReader reader = request.getReader();
+        String json = "", line = "";
+        while((line = reader.readLine()) != null) {
+            json +=  line;
         }
-        return user;
+        System.out.println(json);
+        reader.close();
+        JSONObject jsonObject = new JSONObject(json);
+        String name = (String)jsonObject.get("name");
+        String password = (String)jsonObject.get("password");
+        String email = (String)jsonObject.get("email");
+        String mobile = (String)jsonObject.get("mobile");
+        String verification_code = UUIDUtil.getOrderIdByUUId();
+        if(userService.getByName(name) != null) {
+            out.write("nameRepeat");
+            return;
+        }
+        User user = new User();
+        user.setName(name);
+        user.setPassword(password);
+        user.setEmail(email);
+        if(mobile != null && mobile.length() > 0 && TestUtil.isNumeric(mobile)) {
+            user.setMobile(mobile);
+        }
+        user.setVerification_code(verification_code);
+        userService.add(user);
+        try {
+            new Thread(new MailUtil(email, verification_code)).run();
+        } catch (Exception e) {
+            out.write("emailError");
+            return;
+        }
+        out.write("success");
     }
 
     @RequestMapping("/user_checkLogin")
@@ -69,5 +100,26 @@ public class UserController {
         } else {
             out.write("error");
         }
+    }
+
+    @RequestMapping("/activeUser")
+    public void activeUser(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException{
+        response.setContentType("text/html;charset=UTF-8");
+        String code = request.getParameter("code");
+        User user = (User)userService.getByCode(code);
+        PrintWriter out = response.getWriter();
+        if (user == null) {
+            out.write("验证失败");
+            response.setHeader("refresh", "3;url=/");
+            return;
+        } else if(user.getStatus().contains("normal")) {
+            out.write("请勿重复验证");
+        } else {
+            userService.setStatus(code);
+            out.write("邮箱验证通过");
+        }
+        session.setAttribute("user", user);
+        model.addAttribute("user", user);
+        response.setHeader("refresh", "3;url=/");
     }
 }

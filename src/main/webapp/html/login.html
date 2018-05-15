@@ -49,21 +49,30 @@
         });
         $(document).ready(function () {
             $("#registerBtn").click(function () {
-                if ($("#userRegistername").val() == "" || $("#userRegisterPassword1").val() == "" || $("#userRegisterPassword2").val() == "") {
+                var myreg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+                var name = $("#userRegistername").val().replace(/(^\s*)|(\s*$)/g, "");
+                var password = $("#userRegisterPassword1").val().replace(/(^\s*)|(\s*$)/g, "");
+                var email = $("form#registerForm input#email").val().replace(/(^\s*)|(\s*$)/g, "");
+                var mobile = $("form#registerForm input#mobile").val().replace(/(^\s*)|(\s*$)/g, "");
+                if (name.length == 0 || password.length == 0 || email.length == 0) {
                     alert("注册时：请正确输入账号密码");
                 } else if ($("#userRegisterPassword1").val() != $("#userRegisterPassword2").val()) {
                     alert("两次设置密码不一样，请重新输入");
+                } else if(!myreg.test( $("form#registerForm input#email").val().replace(/(^\s*)|(\s*$)/g, ""))) {
+                    alert("请输入正确的邮箱格式")
                 } else {
                     $.ajax({
                             url: "/user_register",
                             type: "Post",
-                            dataType: "json",
-                            data: $("form#registerForm").serialize(),
+                            content: "application/json",
+                            data: JSON.stringify({name: name, password: password, email: email, mobile: mobile}),
                             success: function (data) {
-                                if (data.name.length != 0) {
-                                    alert("注册成功");
-                                } else {
+                                if (data == "success") {
+                                    alert("请登录邮箱验证");
+                                } else if(data == "nameRepeat"){
                                     alert("该用户名已经被使用");
+                                } else if(data == "emailError") {
+                                    alert("邮件发送失败");
                                 }
                             },
                             error: function () {
@@ -125,12 +134,12 @@
     <div class="register w3layouts agileits">
         <h2>注 册</h2>
         <form id="registerForm" method="post" >
-            <input id="userRegistername" type="text" Name="name" placeholder="用户名">
-            <input id="userRegisterPassword1" type="password" Name="password" placeholder="请输入密码">
-            <!--有时间添加邮箱验证功能-->
-            <!--<input type="text" Name="Email Number" placeholder="邮箱" required="">-->
+            <input id="userRegistername" type="text" Name="name" placeholder="用户名(*)">
+            <input id="userRegisterPassword1" type="password" Name="password" placeholder="请输入密码(*)">
+            <input id="userRegisterPassword2" type="password" Name="passwordRepeat" placeholder="请确认密码(*)">
+            <input id="email" type="text" Name="email" placeholder="邮箱(*)" required="">
+            <input id="mobile" type="text" Name="mobile" placeholder="手机" required="">
         </form>
-        <input id="userRegisterPassword2" type="password" Name="passwordRepeat" placeholder="请确认密码">
         <div class="send-button w3layouts agileits">
             <input id="registerBtn" type="submit" value="免费注册">
         </div>
