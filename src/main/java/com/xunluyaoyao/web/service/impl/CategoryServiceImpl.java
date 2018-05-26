@@ -26,4 +26,9 @@ public class CategoryServiceImpl implements CategoryService{
         categoryExample.createCriteria().andPcidEqualTo(pcid);
         return categoryMapper.selectByExample(categoryExample);
     }
+
+    @Override
+    public void addCategory(Category category) {
+        categoryMapper.insert(category);
+    }
 }

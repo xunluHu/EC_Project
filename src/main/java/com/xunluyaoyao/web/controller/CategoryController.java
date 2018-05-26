@@ -34,4 +34,13 @@ public class CategoryController {
         System.out.println(ja.toString());
         out.write(ja.toString());
     }
+
+    @RequestMapping("/addCategory")
+    void addCategory(HttpServletResponse response, Category category) throws IOException{
+        response.setHeader("Content-Type", "text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        System.out.println(category.getNAME());
+        categoryService.addCategory(category);
+        out.write("success");
+    }
 }

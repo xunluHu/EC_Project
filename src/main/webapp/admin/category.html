@@ -25,11 +25,11 @@
 </div>
 
 <div class="box-body">
-    <ol class="breadcrumb"  id="appHeader">
-        <template  v-for="item in categorys">
-        <li>
-            <a href="#" @click="vm.getData(item.id), vmHeader.changeLevels(item.id)">{{ item.name }}</a>
-        </li>
+    <ol class="breadcrumb" id="appHeader">
+        <template v-for="item in categorys">
+            <li>
+                <a href="#" @click="vm.getData(item.id), vmHeader.changeLevels(item.id)">{{ item.name }}</a>
+            </li>
         </template>
     </ol>
     <!-- 数据表格 -->
@@ -42,8 +42,11 @@
                     <button type="button" class="btn btn-default" title="新建" data-toggle="modal"
                             data-target="#editModal"><i class="fa fa-file-o"></i> 新建
                     </button>
-                    <button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
-                    <button type="button" class="btn btn-default" title="刷新" onclick="vm.getData()"><i class="fa fa-check"></i> 刷新</button>
+                    <!--涉及到级联删除展示搁置-->
+                    <!--<button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>-->
+                    <button type="button" class="btn btn-default" title="刷新" onclick="vm.getData()"><i
+                            class="fa fa-check"></i> 刷新
+                    </button>
 
                 </div>
             </div>
@@ -55,23 +58,19 @@
             <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
                 <thead>
                 <tr>
-                    <th class="" style="padding-right:0px">
-                        <input type="checkbox" class="icheckbox_square-blue">
-                    </th>
                     <th class="sorting_asc">分类ID</th>
                     <th class="sorting">分类名称</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="item in categorys" >
-                    <th class="" style="padding-right:0px">
-                        <input type="checkbox" class="icheckbox_square-blue">
-                    </th>
+                <tr v-for="item in categorys">
                     <td>{{ item.id }}</td>
                     <td>{{ item.NAME }}</td>
                     <td class="text-center">
-                        <button type="button" :key="item.id" class="btn bg-olive btn-xs" @click="findNext(item.id, item.NAME)">查询下一级</button>
+                        <button type="button" :key="item.id" class="btn bg-olive btn-xs"
+                                @click="findNext(item.id, item.NAME)">查询下一级
+                        </button>
                         <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal">
                             修改
                         </button>
@@ -84,27 +83,26 @@
 <!-- 编辑窗口 -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" id="appEdit">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 id="myModalLabel">商品分类编辑</h3>
+                <h3 id="myModalLabel">商品分类新增</h3>
             </div>
             <div class="modal-body">
-
                 <table class="table table-bordered table-striped" width="800px">
                     <tr>
                         <td>上级商品分类</td>
-                        <td>商务英语</td>
+                        <td>{{currentCategory.name}}</td>
                     </tr>
                     <tr>
                         <td>商品分类名称</td>
-                        <td><input class="form-control" placeholder="商品分类名称"></td>
+                        <td><input class="form-control" id="categoryName" placeholder="商品分类名称"></td>
                     </tr>
                 </table>
 
             </div>
             <div class="modal-footer">
-                <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
+                <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" @click="addCategory(currentCategory.id)">保存</button>
                 <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
             </div>
         </div>
@@ -115,17 +113,17 @@
     var vm = new Vue({
         el: '#app',
         data: {
-            categorys: []
+            categorys: [],
         },
         methods: {
             getData: function (pcid) {
-                if(pcid === undefined) {
+                if (pcid === undefined) {
                     pcid = 0;
                 }
                 $.ajax({
                     type: "get",
                     url: '/listRootCategory',
-                    data: {pcid : pcid},
+                    data: {pcid: pcid},
                     dataType: 'json',
                     success: function (data) {
                         vm.categorys = data
@@ -135,7 +133,7 @@
                     }
                 })
             },
-            findNext: function(id, name) {
+            findNext: function (id, name) {
                 $.ajax({
                     type: "post",
                     url: '/listRootCategory',
@@ -144,6 +142,7 @@
                     success: function (data) {
                         vm.categorys = data
                         vmHeader.$data.categorys.push({id: id, name: name})
+                        vmEdit.$data.currentCategory = {id: id, name: name}
                     },
                     error: function () {
                         alert("fail")
@@ -156,14 +155,43 @@
         el: "#appHeader",
         data: {
             categorys: [
-                {id: 0, name: "目录首页"}
-            ]
+                {id: 0, name: "顶级目录"}
+            ],
+            currentCategory:{},
+            hello: "world"
         },
         methods: {
-            changeLevels: function(pcid) {
-                while(vmHeader.$data.categorys[vmHeader.$data.categorys.length - 1].id !== pcid) {
+            changeLevels: function (pcid) {
+                console.log(" changeLevels")
+                while (vmHeader.$data.categorys[vmHeader.$data.categorys.length - 1].id !== pcid) {
                     vmHeader.$data.categorys.pop();
                 }
+                vmEdit.$data.currentCategory = vmHeader.$data.categorys[vmHeader.$data.categorys.length - 1];
+            }
+        }
+    })
+
+    var vmEdit = new Vue({
+        el: "#appEdit",
+        data: {
+            currentCategory:{id: 0, name: "顶级目录"},
+            hello: "world"
+        },
+        methods: {
+            addCategory: function (id) {
+                var categoryName = $("input#categoryName").val()
+                $.ajax({
+                    type: "post",
+                    url: '/addCategory',
+                    data: {pcid: id, NAME: categoryName},
+                    success: function () {
+                        vm.getData(vmHeader.$data.categorys[vmHeader.$data.categorys.length - 1].id);
+                        $("input#categoryName").val("")
+                    },
+                    error: function () {
+                        alert("fail")
+                    }
+                })
             }
         }
     })
