@@ -20,26 +20,11 @@ import java.util.List;
 public class CategoryController {
     @Autowired
     CategoryService categoryService;
-    @RequestMapping("/listCategory")
-    void listCategory(HttpServletResponse response) throws IOException{
+    @RequestMapping("/listRootCategory")
+    void listRootCategory(HttpServletResponse response, Integer pcid) throws IOException{
         response.setHeader("Content-Type", "text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
-        List<Category> list= categoryService.list();
-        List array = new ArrayList();
-        for (Category item: list) {
-            JSONObject object = new JSONObject(item);
-            array.add(object);
-        }
-        JSONArray ja = new JSONArray(array);
-        System.out.println(ja.toString());
-        out.write(ja.toString());
-    }
-
-    @RequestMapping("/findNextCategory")
-    void findNextCategory(HttpServletResponse response, Integer id) throws IOException{
-        response.setHeader("Content-Type", "text/html;charset=utf-8");
-        PrintWriter out = response.getWriter();
-        List<Category> list= categoryService.findNextCategory(id);
+        List<Category> list= categoryService.findNextCategory(pcid);
         List array = new ArrayList();
         for (Category item: list) {
             JSONObject object = new JSONObject(item);
