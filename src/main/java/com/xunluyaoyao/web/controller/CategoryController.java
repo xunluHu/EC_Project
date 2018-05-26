@@ -21,11 +21,25 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
     @RequestMapping("/listCategory")
-    @ResponseBody
     void listCategory(HttpServletResponse response) throws IOException{
         response.setHeader("Content-Type", "text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
         List<Category> list= categoryService.list();
+        List array = new ArrayList();
+        for (Category item: list) {
+            JSONObject object = new JSONObject(item);
+            array.add(object);
+        }
+        JSONArray ja = new JSONArray(array);
+        System.out.println(ja.toString());
+        out.write(ja.toString());
+    }
+
+    @RequestMapping("/findNextCategory")
+    void findNextCategory(HttpServletResponse response, Integer id) throws IOException{
+        response.setHeader("Content-Type", "text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        List<Category> list= categoryService.findNextCategory(id);
         List array = new ArrayList();
         for (Category item: list) {
             JSONObject object = new JSONObject(item);

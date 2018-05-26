@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CategoryService {
     List<Category> list();
+    List<Category> findNextCategory(Integer pcid);
 }

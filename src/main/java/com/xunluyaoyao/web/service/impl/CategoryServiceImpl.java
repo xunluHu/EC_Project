@@ -16,7 +16,14 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public List<Category> list() {
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.createCriteria().andIdGreaterThanOrEqualTo(0);
+        categoryExample.createCriteria().andPcidEqualTo(0);
+        return categoryMapper.selectByExample(categoryExample);
+    }
+
+    @Override
+    public List<Category> findNextCategory(Integer pcid) {
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.createCriteria().andPcidEqualTo(pcid);
         return categoryMapper.selectByExample(categoryExample);
     }
 }
