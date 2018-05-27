@@ -8,4 +8,5 @@ public interface CategoryService {
     List<Category> list();
     List<Category> findNextCategory(Integer pcid);
     void addCategory(Category category);
+    int updateByPrimaryKey(Category record);
 }
