@@ -28,6 +28,11 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
+    public Category selectByPrimaryKey(Integer id) {
+        return categoryMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
     public void addCategory(Category category) {
         categoryMapper.insert(category);
     }

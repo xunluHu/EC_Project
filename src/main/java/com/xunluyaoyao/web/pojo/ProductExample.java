@@ -485,6 +485,76 @@ public class ProductExample {
             return (Criteria) this;
         }
 
+        public Criteria andSTATUSIsNull() {
+            addCriterion("STATUS is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSTATUSIsNotNull() {
+            addCriterion("STATUS is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSTATUSEqualTo(String value) {
+            addCriterion("STATUS =", value, "STATUS");
+            return (Criteria) this;
+        }
+
+        public Criteria andSTATUSNotEqualTo(String value) {
+            addCriterion("STATUS <>", value, "STATUS");
+            return (Criteria) this;
+        }
+
+        public Criteria andSTATUSGreaterThan(String value) {
+            addCriterion("STATUS >", value, "STATUS");
+            return (Criteria) this;
+        }
+
+        public Criteria andSTATUSGreaterThanOrEqualTo(String value) {
+            addCriterion("STATUS >=", value, "STATUS");
+            return (Criteria) this;
+        }
+
+        public Criteria andSTATUSLessThan(String value) {
+            addCriterion("STATUS <", value, "STATUS");
+            return (Criteria) this;
+        }
+
+        public Criteria andSTATUSLessThanOrEqualTo(String value) {
+            addCriterion("STATUS <=", value, "STATUS");
+            return (Criteria) this;
+        }
+
+        public Criteria andSTATUSLike(String value) {
+            addCriterion("STATUS like", value, "STATUS");
+            return (Criteria) this;
+        }
+
+        public Criteria andSTATUSNotLike(String value) {
+            addCriterion("STATUS not like", value, "STATUS");
+            return (Criteria) this;
+        }
+
+        public Criteria andSTATUSIn(List<String> values) {
+            addCriterion("STATUS in", values, "STATUS");
+            return (Criteria) this;
+        }
+
+        public Criteria andSTATUSNotIn(List<String> values) {
+            addCriterion("STATUS not in", values, "STATUS");
+            return (Criteria) this;
+        }
+
+        public Criteria andSTATUSBetween(String value1, String value2) {
+            addCriterion("STATUS between", value1, value2, "STATUS");
+            return (Criteria) this;
+        }
+
+        public Criteria andSTATUSNotBetween(String value1, String value2) {
+            addCriterion("STATUS not between", value1, value2, "STATUS");
+            return (Criteria) this;
+        }
+
         public Criteria andCidIsNull() {
             addCriterion("cid is null");
             return (Criteria) this;

@@ -7,6 +7,7 @@ import java.util.List;
 public interface CategoryService {
     List<Category> list();
     List<Category> findNextCategory(Integer pcid);
+    Category selectByPrimaryKey(Integer id);
     void addCategory(Category category);
     int updateByPrimaryKey(Category record);
 }

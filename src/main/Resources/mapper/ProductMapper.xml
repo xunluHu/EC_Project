@@ -8,6 +8,7 @@
     <result column="originalPrice" jdbcType="REAL" property="originalPrice" />
     <result column="promotePrice" jdbcType="REAL" property="promotePrice" />
     <result column="stock" jdbcType="INTEGER" property="stock" />
+    <result column="STATUS" jdbcType="CHAR" property="STATUS" />
     <result column="cid" jdbcType="INTEGER" property="cid" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
@@ -41,7 +42,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, NAME, subTitle, originalPrice, promotePrice, stock, cid, createDate
+    id, NAME, subTitle, originalPrice, promotePrice, stock, STATUS, cid, createDate
   </sql>
   <select id="selectByExample" parameterType="com.xunluyaoyao.web.pojo.ProductExample" resultMap="BaseResultMap">
     select
@@ -70,11 +71,11 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xunluyaoyao.web.pojo.Product" useGeneratedKeys="true">
     insert into product (NAME, subTitle, originalPrice, 
-      promotePrice, stock, cid, 
-      createDate)
+      promotePrice, stock, STATUS, 
+      cid, createDate)
     values (#{NAME,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, #{originalPrice,jdbcType=REAL}, 
-      #{promotePrice,jdbcType=REAL}, #{stock,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, 
-      #{createDate,jdbcType=TIMESTAMP})
+      #{promotePrice,jdbcType=REAL}, #{stock,jdbcType=INTEGER}, #{STATUS,jdbcType=CHAR}, 
+      #{cid,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xunluyaoyao.web.pojo.Product" useGeneratedKeys="true">
     insert into product
@@ -93,6 +94,9 @@
       </if>
       <if test="stock != null">
         stock,
+      </if>
+      <if test="STATUS != null">
+        STATUS,
       </if>
       <if test="cid != null">
         cid,
@@ -116,6 +120,9 @@
       </if>
       <if test="stock != null">
         #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="STATUS != null">
+        #{STATUS,jdbcType=CHAR},
       </if>
       <if test="cid != null">
         #{cid,jdbcType=INTEGER},
@@ -143,6 +150,9 @@
       <if test="stock != null">
         stock = #{stock,jdbcType=INTEGER},
       </if>
+      <if test="STATUS != null">
+        STATUS = #{STATUS,jdbcType=CHAR},
+      </if>
       <if test="cid != null">
         cid = #{cid,jdbcType=INTEGER},
       </if>
@@ -159,6 +169,7 @@
       originalPrice = #{originalPrice,jdbcType=REAL},
       promotePrice = #{promotePrice,jdbcType=REAL},
       stock = #{stock,jdbcType=INTEGER},
+      STATUS = #{STATUS,jdbcType=CHAR},
       cid = #{cid,jdbcType=INTEGER},
       createDate = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

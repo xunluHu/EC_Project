@@ -15,6 +15,8 @@ public class Product {
 
     private Integer stock;
 
+    private String STATUS;
+
     private Integer cid;
 
     private Date createDate;
@@ -65,6 +67,14 @@ public class Product {
 
     public void setStock(Integer stock) {
         this.stock = stock;
+    }
+
+    public String getSTATUS() {
+        return STATUS;
+    }
+
+    public void setSTATUS(String STATUS) {
+        this.STATUS = STATUS == null ? null : STATUS.trim();
     }
 
     public Integer getCid() {

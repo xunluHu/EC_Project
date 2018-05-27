@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../plugins/vue.js"></script>
 
 </head>
 
@@ -50,22 +51,26 @@
                 </th>
                 <th class="sorting_asc">商品ID</th>
                 <th class="sorting">商品名称</th>
+                <th class="sorting">副标题</th>
                 <th class="sorting">原始价格</th>
                 <th class="sorting">促销价格</th>
-                <th class="sorting">分类</th>
+                <th class="sorting">库存</th>
                 <th class="sorting">状态</th>
+                <th class="sorting">分类</th>
                 <th class="text-center">操作</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
+            <tbody id="app">
+            <tr v-for="item in products">
                 <td><input type="checkbox"></td>
-                <td>1</td>
-                <td>华为Mete8</td>
-                <td>3020</td>
-                <td>2000</td>
-                <td>手机</td>
-                <td>上架</td>
+                <td>{{item.id}}</td>
+                <td>{{item.NAME}}</td>
+                <td>{{item.subTitle}}</td>
+                <td>{{item.originalPrice}}</td>
+                <td>{{item.promotePrice}}</td>
+                <td>{{item.stock}}</td>
+                <td>{{item.STATUS}}</td>
+                <td>{{item.category}}</td>
                 <td class="text-center">
                     <button type="button" class="btn bg-olive btn-xs">修改</button>
                 </td>
@@ -94,19 +99,26 @@
                         <td><input class="form-control" placeholder="商品名称"></td>
                     </tr>
                     <tr>
+                        <td>副标题</td>
+                        <td><input class="form-control" placeholder="副标题"></td>
+                    </tr>
+                    <tr>
                         <td>原始价格</td>
-                        <td><input class="form-control" placeholder="原始价格"></td>
+                        <td><input class="form-control" placeholder="原始价格" type="number"></td>
                     </tr>
                     <tr>
                         <td>促销价格</td>
-                        <td><input class="form-control" placeholder="促销价格"></td>
+                        <td><input class="form-control" placeholder="促销价格" type="number"></td>
+                    </tr>
+                    <tr>
+                        <td>库存</td>
+                        <td><input class="form-control" placeholder="库存"  type="number"></td>
                     </tr>
                     <tr>
                         <td>状态</td>
                         <td>
                             <select style="width: 200px">
                                 <option value="上架">上架</option>
-                                <option value="促销">促销</option>
                                 <option value="下架">下架</option>
                             </select></td>
                     </tr>
@@ -122,5 +134,31 @@
 </div>
 
 </body>
-
+<script>
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            products:[
+                {id: 1, NAME: "xiaohu", subTitle: "爱买不买", originalPrice: 666, promotePrice: 66, stock: 6, STATUS: "上架",category: "教育"},
+                {id: 1, NAME: "xiaohu", subTitle: "爱买不买", originalPrice: 666, promotePrice: 66, stock: 6, STATUS: "上架",category: "教育"}
+                ]
+        },
+        methods: {
+          getData: function() {
+              $.ajax({
+                  type: "get",
+                  url: "/getAllProducts",
+                  dataType: "json",
+                  success: function(data) {
+                      vm.products = data;
+                  },
+                  error: function() {
+                      alert("fail")
+                  }
+              })
+          }
+        }
+    })
+    vm.getData();
+</script>
 </html>
