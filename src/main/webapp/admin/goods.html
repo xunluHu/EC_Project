@@ -29,7 +29,7 @@
             <div class="form-group form-inline">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default" title="新建" data-toggle="modal"
-                            data-target="#editModal"><i class="fa fa-file-o"></i> 新建
+                            data-target="#editModal" onclick="vmEdit.isEdit = false"><i class="fa fa-file-o"></i> 新建
                     </button>
                     <button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
                     <button type="button" class="btn btn-default" title="刷新" onclick="vm.getData()"><i
@@ -75,7 +75,7 @@
                 <td>{{item.category}}</td>
                 <td class="text-center">
                     <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal"
-                            @click="initEditProduct(item); vm.$data.currentEditId = item.id">修改
+                            @click="initEditProduct(item); vmEdit.isEdit = true; vm.$data.currentEditId = item.id;">修改
                     </button>
                 </td>
             </tr>
@@ -129,8 +129,9 @@
                 </table>
 
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" onclick="vm.editProduct()">保存</button>
+            <div class="modal-footer" id="appEdit">
+                <button class="btn btn-success" v-if="isEdit"data-dismiss="modal" aria-hidden="true" @click="vm.editProduct()">保存</button>
+                <button class="btn btn-success" v-else data-dismiss="modal" aria-hidden="true" @click="vm.addProduct()">添加</button>
                 <button class="btn btn-default" data-dismiss="modal" aria-hidden="true" onclick="vm.closeEditProduct()">
                     关闭
                 </button>
@@ -141,6 +142,12 @@
 
 </body>
 <script>
+    var vmEdit = new Vue({
+        el: "#appEdit",
+        data: {
+            isEdit: true
+        }
+    })
     var vm = new Vue({
         el: "#app",
         data: {
@@ -156,7 +163,7 @@
                     category: "教育"
                 }
             ],
-            currentEditId: 0
+            currentEditId: 0,
         },
         methods: {
             getData: function (categoryName) {
@@ -197,11 +204,10 @@
                 }
                 rows[6].cells[1].getElementsByTagName('select')[0].value = "上架"
             },
-            editProduct: function() {
+            getTableValue: function () {
                 var tb = document.getElementById('editTr');
                 var rows = tb.rows;
-                var data = {
-                    id: vm.currentEditId,
+                return {
                     NAME: rows[1].cells[1].getElementsByTagName('input')[0].value,
                     subTitle: rows[2].cells[1].getElementsByTagName('input')[0].value,
                     originalPrice: rows[3].cells[1].getElementsByTagName('input')[0].value,
@@ -210,13 +216,36 @@
                     STATUS: rows[6].cells[1].getElementsByTagName('select')[0].value,
                     categoryName: rows[0].cells[1].getElementsByTagName('input')[0].value.replace(/(^\s*)|(\s*$)/g, "")
                 }
+            },
+            editProduct: function() {
+                vmEdit.isEdit = true;
+                var data = vm.getTableValue()
+                data.id = vm.currentEditId
+                $.ajax({
+                    type: "post",
+                    url: "/editProduct",
+                    data: data,
+                    success: function (data) {
+                        if (data == "category") {
+                           alert("你所输入的分类名不存在")
+                        }
+                        vm.getData()
+                    },
+                    error: function () {
+                        alert("fail")
+                    }
+                })
+            },
+            addProduct: function() {
+                vmEdit.isEdit = false;
+                var data = vm.getTableValue()
                 $.ajax({
                     type: "post",
                     url: "/addProduct",
                     data: data,
                     success: function (data) {
                         if (data == "category") {
-                           alert("你所输入的分类名不存在")
+                            alert("你所输入的分类名不存在")
                         }
                         vm.getData()
                     },

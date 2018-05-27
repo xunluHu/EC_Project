@@ -31,4 +31,9 @@ public class ProductServiceImpl implements ProductService {
     public void updateProductById(Product product) {
         productMapper.updateByPrimaryKey(product);
     }
+
+    @Override
+    public void insertProduct(Product product) {
+        productMapper.insert(product);
+    }
 }

@@ -51,9 +51,9 @@ public class ProductController {
         }
     }
 
-    @RequestMapping("/addProduct")
+    @RequestMapping("/editProduct")
     @ResponseBody
-    String addProduct(Product product, String categoryName) {
+    String editProduct(Product product, String categoryName) {
         Category category = categoryService.selectByName(categoryName);
         System.out.println(category == null);
         if (category == null) {
@@ -62,6 +62,20 @@ public class ProductController {
         product.setCid(category.getId());
         product.setCreateDate(new Date());
         productService.updateProductById(product);
+        return "success";
+    }
+
+    @RequestMapping("/addProduct")
+    @ResponseBody
+    String addProduct(Product product, String categoryName) {
+        Category category = categoryService.selectByName(categoryName);
+        System.out.println(category == null);
+        if (category == null) {
+            return "category";
+        }
+        product.setCid(category.getId());
+        product.setCreateDate(new Date());
+        productService.insertProduct(product);
         return "success";
     }
 }
