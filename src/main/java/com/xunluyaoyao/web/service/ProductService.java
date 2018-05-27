@@ -7,4 +7,5 @@ import java.util.List;
 public interface ProductService {
     List<Product> getALLProduct();
     List<Product> getProductByCid(Integer cid);
+    void updateProductById(Product product);
 }

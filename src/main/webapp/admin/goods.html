@@ -32,13 +32,15 @@
                             data-target="#editModal"><i class="fa fa-file-o"></i> 新建
                     </button>
                     <button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
-                    <button type="button" class="btn btn-default" title="刷新" onclick="vm.getData()"><i class="fa fa-refresh" ></i> 刷新</button>
+                    <button type="button" class="btn btn-default" title="刷新" onclick="vm.getData()"><i
+                            class="fa fa-refresh"></i> 刷新
+                    </button>
                 </div>
             </div>
         </div>
         <div class="box-tools pull-right">
             <div class="has-feedback">
-                商品分类：<input id="categoryName" />
+                商品分类：<input id="categoryName"/>
                 <button class="btn btn-default" onclick="vm.getData('categoryName')">查询</button>
             </div>
         </div>
@@ -72,7 +74,9 @@
                 <td>{{item.STATUS}}</td>
                 <td>{{item.category}}</td>
                 <td class="text-center">
-                    <button type="button" class="btn bg-olive btn-xs">修改</button>
+                    <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal"
+                            @click="initEditProduct(item); vm.$data.currentEditId = item.id">修改
+                    </button>
                 </td>
             </tr>
             </tbody>
@@ -89,10 +93,10 @@
             </div>
             <div class="modal-body">
 
-                <table class="table table-bordered table-striped" width="800px">
+                <table id="editTr" class="table table-bordered table-striped" width="800px">
                     <tr>
                         <td>商品分类</td>
-                        <td>由上级目录而来定死</td>
+                        <td><input class="form-control" placeholder="商品分类"></td>
                     </tr>
                     <tr>
                         <td>商品名称</td>
@@ -112,7 +116,7 @@
                     </tr>
                     <tr>
                         <td>库存</td>
-                        <td><input class="form-control" placeholder="库存"  type="number"></td>
+                        <td><input class="form-control" placeholder="库存" type="number"></td>
                     </tr>
                     <tr>
                         <td>状态</td>
@@ -126,8 +130,10 @@
 
             </div>
             <div class="modal-footer">
-                <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
-                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" onclick="vm.editProduct()">保存</button>
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true" onclick="vm.closeEditProduct()">
+                    关闭
+                </button>
             </div>
         </div>
     </div>
@@ -138,31 +144,88 @@
     var vm = new Vue({
         el: "#app",
         data: {
-            products:[
-                {id: 1, NAME: "xiaohu", subTitle: "爱买不买", originalPrice: 666, promotePrice: 66, stock: 6, STATUS: "上架",category: "教育"},
-                {id: 1, NAME: "xiaohu", subTitle: "爱买不买", originalPrice: 666, promotePrice: 66, stock: 6, STATUS: "上架",category: "教育"}
-                ]
+            products: [
+                {
+                    id: 1,
+                    NAME: "xiaohu",
+                    subTitle: "爱买不买",
+                    originalPrice: 666,
+                    promotePrice: 66,
+                    stock: 6,
+                    STATUS: "上架",
+                    category: "教育"
+                }
+            ],
+            currentEditId: 0
         },
         methods: {
-          getData: function(categoryName) {
-              var data = {}
-              if (categoryName !== undefined) {
-                  //除去前后所有空格
-                  data = {categoryName: $("input#categoryName").val().replace(/(^\s*)|(\s*$)/g, "")}
-              }
-              $.ajax({
-                  type: "get",
-                  url: "/getProducts",
-                  dataType: "json",
-                  data: data,
-                  success: function(data) {
-                      vm.products = data;
-                  },
-                  error: function() {
-                      alert("fail")
-                  }
-              })
-          }
+            getData: function (categoryName) {
+                var data = {}
+                if (categoryName !== undefined) {
+                    //除去前后所有空格
+                    data = {categoryName: $("input#categoryName").val().replace(/(^\s*)|(\s*$)/g, "")}
+                }
+                $.ajax({
+                    type: "get",
+                    url: "/getProducts",
+                    dataType: "json",
+                    data: data,
+                    success: function (data) {
+                        vm.products = data;
+                    },
+                    error: function () {
+                        alert("fail")
+                    }
+                })
+            },
+            initEditProduct: function (item) {
+                var tb = document.getElementById('editTr');
+                var rows = tb.rows;
+                rows[0].cells[1].getElementsByTagName('input')[0].value = item.category
+                rows[1].cells[1].getElementsByTagName('input')[0].value = item.NAME
+                rows[2].cells[1].getElementsByTagName('input')[0].value = item.subTitle
+                rows[3].cells[1].getElementsByTagName('input')[0].value = item.originalPrice
+                rows[4].cells[1].getElementsByTagName('input')[0].value = item.promotePrice
+                rows[5].cells[1].getElementsByTagName('input')[0].value = item.stock
+                rows[6].cells[1].getElementsByTagName('select')[0].value = item.STATUS
+            },
+            closeEditProduct: function () {
+                var tb = document.getElementById('editTr');
+                var rows = tb.rows;
+                for (var i = 0; i < 6; i++) {
+                    rows[i].cells[1].getElementsByTagName('input')[0].value = ""
+                }
+                rows[6].cells[1].getElementsByTagName('select')[0].value = "上架"
+            },
+            editProduct: function() {
+                var tb = document.getElementById('editTr');
+                var rows = tb.rows;
+                var data = {
+                    id: vm.currentEditId,
+                    NAME: rows[1].cells[1].getElementsByTagName('input')[0].value,
+                    subTitle: rows[2].cells[1].getElementsByTagName('input')[0].value,
+                    originalPrice: rows[3].cells[1].getElementsByTagName('input')[0].value,
+                    promotePrice: rows[4].cells[1].getElementsByTagName('input')[0].value,
+                    stock: rows[5].cells[1].getElementsByTagName('input')[0].value,
+                    STATUS: rows[6].cells[1].getElementsByTagName('select')[0].value,
+                    categoryName: rows[0].cells[1].getElementsByTagName('input')[0].value.replace(/(^\s*)|(\s*$)/g, "")
+                }
+                $.ajax({
+                    type: "post",
+                    url: "/addProduct",
+                    data: data,
+                    success: function (data) {
+                        if (data == "category") {
+                           alert("你所输入的分类名不存在")
+                        }
+                        vm.getData()
+                    },
+                    error: function () {
+                        alert("fail")
+                    }
+                })
+            }
+
         }
     })
     vm.getData();

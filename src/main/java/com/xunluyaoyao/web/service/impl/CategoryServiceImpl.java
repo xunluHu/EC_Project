@@ -36,7 +36,11 @@ public class CategoryServiceImpl implements CategoryService{
     public Category selectByName(String name) {
         CategoryExample categoryExample = new CategoryExample();
         categoryExample.createCriteria().andNAMEEqualTo(name);
-        return categoryMapper.selectByExample(categoryExample).get(0);
+        if(categoryMapper.selectByExample(categoryExample).size() > 0) {
+            return categoryMapper.selectByExample(categoryExample).get(0);
+        } else {
+            return null;
+        }
     }
 
     @Override

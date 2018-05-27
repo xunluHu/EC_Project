@@ -26,4 +26,9 @@ public class ProductServiceImpl implements ProductService {
         example.createCriteria().andCidEqualTo(cid);
         return productMapper.selectByExample(example);
     }
+
+    @Override
+    public void updateProductById(Product product) {
+        productMapper.updateByPrimaryKey(product);
+    }
 }

@@ -9,11 +9,13 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -32,7 +34,6 @@ public class ProductController {
             list = productService.getALLProduct() ;
         } else {
             Integer cid = categoryService.selectByName(categoryName).getId();
-            System.out.println("ciddddddddddddddddd" + cid);
             list = productService.getProductByCid(cid);
         }
         if(list != null) {
@@ -48,5 +49,19 @@ public class ProductController {
         } else {
             out.write("fail");
         }
+    }
+
+    @RequestMapping("/addProduct")
+    @ResponseBody
+    String addProduct(Product product, String categoryName) {
+        Category category = categoryService.selectByName(categoryName);
+        System.out.println(category == null);
+        if (category == null) {
+           return "category";
+        }
+        product.setCid(category.getId());
+        product.setCreateDate(new Date());
+        productService.updateProductById(product);
+        return "success";
     }
 }
