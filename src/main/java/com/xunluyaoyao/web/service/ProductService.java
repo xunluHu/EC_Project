@@ -9,4 +9,5 @@ public interface ProductService {
     List<Product> getProductByCid(Integer cid);
     void updateProductById(Product product);
     void insertProduct(Product product);
+    void deleteByPrimaryKey(Integer id);
 }

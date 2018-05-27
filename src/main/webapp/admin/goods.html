@@ -31,7 +31,7 @@
                     <button type="button" class="btn btn-default" title="新建" data-toggle="modal"
                             data-target="#editModal" onclick="vmEdit.isEdit = false"><i class="fa fa-file-o"></i> 新建
                     </button>
-                    <button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
+                    <button type="button" class="btn btn-default" title="删除" onclick="deleteSelectedId()"><i class="fa fa-trash-o"></i> 删除</button>
                     <button type="button" class="btn btn-default" title="刷新" onclick="vm.getData()"><i
                             class="fa fa-refresh"></i> 刷新
                     </button>
@@ -49,7 +49,7 @@
             <thead>
             <tr>
                 <th class="" style="padding-right:0px">
-                    <input id="selall" type="checkbox" class="icheckbox_square-blue">
+                    <input id="selectAll" type="checkbox" class="icheckbox_square-blue" onclick="selectAll()">
                 </th>
                 <th class="sorting_asc">商品ID</th>
                 <th class="sorting">商品名称</th>
@@ -64,7 +64,7 @@
             </thead>
             <tbody id="app">
             <tr v-for="item in products">
-                <td><input type="checkbox"></td>
+                <td><input type="checkbox" name="t1" @click="vm.selectCurrentId($event, item.id)"></td>
                 <td>{{item.id}}</td>
                 <td>{{item.NAME}}</td>
                 <td>{{item.subTitle}}</td>
@@ -164,6 +164,7 @@
                 }
             ],
             currentEditId: 0,
+            selectIds: []
         },
         methods: {
             getData: function (categoryName) {
@@ -226,7 +227,7 @@
                     url: "/editProduct",
                     data: data,
                     success: function (data) {
-                        if (data == "category") {
+                        if (data === "category") {
                            alert("你所输入的分类名不存在")
                         }
                         vm.getData()
@@ -238,13 +239,13 @@
             },
             addProduct: function() {
                 vmEdit.isEdit = false;
-                var data = vm.getTableValue()
+                let data = vm.getTableValue()
                 $.ajax({
                     type: "post",
                     url: "/addProduct",
                     data: data,
                     success: function (data) {
-                        if (data == "category") {
+                        if (data === "category") {
                             alert("你所输入的分类名不存在")
                         }
                         vm.getData()
@@ -253,10 +254,60 @@
                         alert("fail")
                     }
                 })
+            },
+            selectCurrentId: function(e, id) {
+                var checked = e.target.checked
+                if(checked) {
+                    vm.selectIds.push(id)
+                } else {
+                    for (let i = 0; i < vm.selectIds.length; i++) {
+                        if(vm.selectIds[i] === id) {
+                            vm.selectIds.splice(i, 1)
+                            return
+                        }
+                    }
+                }
             }
-
         }
     })
+    function selectAll() {
+        let tb = document.getElementById('app');
+        let rows = tb.rows;
+        vm.selectIds = []
+        if($("input#selectAll").prop("checked")) {
+            for(let i = 0; i < rows.length; ++i) {
+                rows[i].cells[0].getElementsByTagName('input')[0].checked = true;
+                vm.selectIds.push(parseInt(rows[i].cells[1].innerText))
+            }
+        } else {
+            for(let i = 0; i < rows.length; ++i) {
+                rows[i].cells[0].getElementsByTagName('input')[0].checked = false;
+            }
+        }
+    }
+    function deleteSelectedId() {
+        $.ajax({
+            type: "post",
+            url: "/deleteProduct",
+            data: {selectIds: vm.selectIds},
+            success: function (data) {
+                if (data === "success") {
+                    vm.getData()
+                    let tb = document.getElementById('app');
+                    let rows = tb.rows;
+                    vm.selectIds = []
+                    for(let i = 0; i < rows.length; ++i) {
+                        rows[i].cells[0].getElementsByTagName('input')[0].checked = false;
+                    }
+                } else {
+                    alert("请重试");
+                }
+            },
+            error: function () {
+                alert("fail")
+            }
+        })
+    }
     vm.getData();
 </script>
 </html>

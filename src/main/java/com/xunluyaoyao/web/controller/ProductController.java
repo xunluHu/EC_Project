@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
@@ -76,6 +77,15 @@ public class ProductController {
         product.setCid(category.getId());
         product.setCreateDate(new Date());
         productService.insertProduct(product);
+        return "success";
+    }
+
+    @RequestMapping("/deleteProduct")
+    @ResponseBody
+    String deleteProduct(@RequestParam(value = "selectIds[]") Integer[] selectIds) {
+        for(Integer id : selectIds) {
+            productService.deleteByPrimaryKey(id);
+        }
         return "success";
     }
 }
