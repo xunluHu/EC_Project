@@ -1,9 +1,12 @@
 package com.xunluyaoyao.web.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.xunluyaoyao.web.mapper.ProductMapper;
 import com.xunluyaoyao.web.pojo.Product;
 import com.xunluyaoyao.web.pojo.ProductExample;
 import com.xunluyaoyao.web.service.ProductService;
+import com.xunluyaoyao.web.utils.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,5 +43,21 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteByPrimaryKey(Integer id) {
         productMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public PageResult findPage(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        Page<Product> page = (Page<Product>)productMapper.selectByExample(null);
+        return new PageResult(page.getTotal(), page.getResult());
+    }
+
+    @Override
+    public PageResult findPageByCid(int pageNum, int pageSize, Integer cid) {
+        PageHelper.startPage(pageNum, pageSize);
+        ProductExample example = new ProductExample();
+        example.createCriteria().andCidEqualTo(cid);
+        Page<Product> page = (Page<Product>)productMapper.selectByExample(example);
+        return new PageResult(page.getTotal(), page.getResult());
     }
 }

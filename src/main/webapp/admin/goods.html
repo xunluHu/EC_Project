@@ -16,6 +16,8 @@
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
     <script src="../plugins/vue.js"></script>
 
+    <script src="../plugins/jQuery/jqPaginator.js"></script>
+
 </head>
 
 <body class="hold-transition skin-red sidebar-mini">
@@ -32,7 +34,7 @@
                             data-target="#editModal" onclick="vmEdit.isEdit = false"><i class="fa fa-file-o"></i> 新建
                     </button>
                     <button type="button" class="btn btn-default" title="删除" onclick="deleteSelectedId()"><i class="fa fa-trash-o"></i> 删除</button>
-                    <button type="button" class="btn btn-default" title="刷新" onclick="vm.getData()"><i
+                    <button type="button" class="btn btn-default" title="刷新" onclick="flash()"><i
                             class="fa fa-refresh"></i> 刷新
                     </button>
                 </div>
@@ -41,7 +43,7 @@
         <div class="box-tools pull-right">
             <div class="has-feedback">
                 商品分类：<input id="categoryName"/>
-                <button class="btn btn-default" onclick="vm.getData('categoryName')">查询</button>
+                <button class="btn btn-default" onclick="selectListByCategoryName()">查询</button>
             </div>
         </div>
         <!--数据列表-->
@@ -82,7 +84,9 @@
             </tbody>
         </table>
     </div>
+    <div style=" position: relative; left: 40%;"><ul class="pagination" id="pagination1"></ul></div>
 </div>
+
 <!-- 编辑窗口 -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -164,14 +168,17 @@
                 }
             ],
             currentEditId: 0,
-            selectIds: []
+            selectIds: [],
+            pageNum: 0,
+            pageSize: 10,
+            isSelect: false,
+            categoryName: "",
         },
         methods: {
-            getData: function (categoryName) {
-                var data = {}
-                if (categoryName !== undefined) {
-                    //除去前后所有空格
-                    data = {categoryName: $("input#categoryName").val().replace(/(^\s*)|(\s*$)/g, "")}
+            getData: function () {
+                let data = {pageNum: vm.pageNum, pageSize: vm.pageSize}
+                if (vm.isSelect) {
+                    data.categoryName = vm.categoryName
                 }
                 $.ajax({
                     type: "get",
@@ -179,7 +186,10 @@
                     dataType: "json",
                     data: data,
                     success: function (data) {
-                        vm.products = data;
+                        vm.products = data.list;
+                        $('#pagination1').jqPaginator('option', {
+                            totalPages: (data.total - data.total % vm.pageSize) / vm.pageSize + (data.total % vm.pageSize !== 0 ? 1 : 0)
+                        });
                     },
                     error: function () {
                         alert("fail")
@@ -286,6 +296,9 @@
         }
     }
     function deleteSelectedId() {
+        if (vm.selectIds.length === 0) {
+            return
+        }
         $.ajax({
             type: "post",
             url: "/deleteProduct",
@@ -308,6 +321,32 @@
             }
         })
     }
-    vm.getData();
+    function flash() {
+        vm.isSelect = false
+        $("input#categoryName").val("")
+        vm.getData()
+    }
+    function selectListByCategoryName() {
+        vm.categoryName = $("input#categoryName").val().replace(/(^\s*)|(\s*$)/g, "")
+        if(vm.categoryName === "") {
+            return
+        }
+        vm.isSelect = true
+        vm.getData()
+    }
+    $.jqPaginator('#pagination1', {
+        totalPages: 1,
+        visiblePages: 3,
+        currentPage: 1,
+        first: '<li class="first"><a href="javascript:;"><<</a></li>',
+        prev: '<li class="prev"><a href="javascript:;"><</a></li>',
+        next: '<li class="next"><a href="javascript:;">></a></li>',
+        last: '<li class="last"><a href="javascript:;">>></a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+        onPageChange: function (num) {
+            vm.pageNum = num
+            vm.getData()
+        }
+    });
 </script>
 </html>
