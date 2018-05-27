@@ -23,11 +23,18 @@ public class ProductController {
     ProductService productService;
     @Autowired
     CategoryService categoryService;
-    @RequestMapping("/getAllProducts")
-    void getProducts(HttpServletResponse response) throws IOException {
+    @RequestMapping("/getProducts")
+    void getProducts(HttpServletResponse response, String categoryName) throws IOException {
         response.setHeader("Content-Type", "text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
-        List<Product> list = productService.getALLProduct();
+        List<Product> list = null;
+        if(categoryName == null) {
+            list = productService.getALLProduct() ;
+        } else {
+            Integer cid = categoryService.selectByName(categoryName).getId();
+            System.out.println("ciddddddddddddddddd" + cid);
+            list = productService.getProductByCid(cid);
+        }
         if(list != null) {
             List array = new ArrayList();
             for (Product item: list) {

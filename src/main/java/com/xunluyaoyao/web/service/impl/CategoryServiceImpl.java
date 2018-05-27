@@ -33,6 +33,13 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
+    public Category selectByName(String name) {
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.createCriteria().andNAMEEqualTo(name);
+        return categoryMapper.selectByExample(categoryExample).get(0);
+    }
+
+    @Override
     public void addCategory(Category category) {
         categoryMapper.insert(category);
     }

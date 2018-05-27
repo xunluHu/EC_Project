@@ -32,14 +32,14 @@
                             data-target="#editModal"><i class="fa fa-file-o"></i> 新建
                     </button>
                     <button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
-                    <button type="button" class="btn btn-default" title="刷新"><i class="fa fa-refresh"></i> 刷新</button>
+                    <button type="button" class="btn btn-default" title="刷新" onclick="vm.getData()"><i class="fa fa-refresh" ></i> 刷新</button>
                 </div>
             </div>
         </div>
         <div class="box-tools pull-right">
             <div class="has-feedback">
-                商品名称：<input>
-                <button class="btn btn-default">查询</button>
+                商品分类：<input id="categoryName" />
+                <button class="btn btn-default" onclick="vm.getData('categoryName')">查询</button>
             </div>
         </div>
         <!--数据列表-->
@@ -144,11 +144,17 @@
                 ]
         },
         methods: {
-          getData: function() {
+          getData: function(categoryName) {
+              var data = {}
+              if (categoryName !== undefined) {
+                  //除去前后所有空格
+                  data = {categoryName: $("input#categoryName").val().replace(/(^\s*)|(\s*$)/g, "")}
+              }
               $.ajax({
                   type: "get",
-                  url: "/getAllProducts",
+                  url: "/getProducts",
                   dataType: "json",
+                  data: data,
                   success: function(data) {
                       vm.products = data;
                   },

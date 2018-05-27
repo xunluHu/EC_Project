@@ -19,4 +19,11 @@ public class ProductServiceImpl implements ProductService {
         example.createCriteria().andIdIsNotNull();
         return productMapper.selectByExample(example);
     }
+
+    @Override
+    public List<Product> getProductByCid(Integer cid) {
+        ProductExample example = new ProductExample();
+        example.createCriteria().andCidEqualTo(cid);
+        return productMapper.selectByExample(example);
+    }
 }
