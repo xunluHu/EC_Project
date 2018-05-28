@@ -33,7 +33,6 @@ public class ProductController {
         response.setHeader("Content-Type", "text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
         List<Product> list = null;
-        int total = 0;
         JSONObject res = new JSONObject();
         PageResult pageResult = null;
         if(categoryName == null) {

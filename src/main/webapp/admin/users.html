@@ -14,33 +14,44 @@
     <link rel="stylesheet" href="../css/style.css">
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../plugins/vue.js"></script>
 
+    <script src="../plugins/jQuery/jqPaginator.js"></script>
 </head>
 
 <body class="hold-transition skin-red sidebar-mini">
 <!-- .box-body -->
-<div class="box box-primary">
+<div class="box box-primary" id="app">
     <div class="box-header with-border">
         <h3 class="box-title">用户管理</h3>
     </div>
-
     <div class="box-body">
         <div class="table-box">
+            <div class="pull-left">
+                <div class="form-group form-inline">
+                    <div class="btn-group">
 
-            <!--工具栏-->
-
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#sellerModal"
+                                title="新建" onclick="vm.isEdit = false"><i class="fa fa-file-o"></i> 新建
+                        </button>
+                        <button type="button" class="btn btn-default" title="刷新" onclick="flash()"><i
+                                class="fa fa-refresh"></i> 刷新
+                        </button>
+                    </div>
+                </div>
+            </div>
             <div class="box-tools pull-right">
                 <div class="has-feedback">
-                    姓名：<input/>
-                    电话：<input/>
-                    邮箱：<input/>
+                    姓名：<input id="username"/>
+                    电话：<input id="mobile"/>
+                    邮箱：<input id="email"/>
                     状态：
-                    <input type="radio" value=""/>全部
-                    <input type="radio" value="0"/>管理员
-                    <input type="radio" value="1"/>vip
-                    <input type="radio" value="2"/>普通用户
-                    <input type="radio" value="3"/>未注册成功
-                    <button class="btn btn-default">查询</button>
+                    <input type="radio" value="all" name="userType" v-model="userType"/>全部
+                    <input type="radio" value="admin" name="userType" v-model="userType"/>管理员
+                    <input type="radio" value="to be verified" name="userType" v-model="userType"/>未注册成功
+                    <input type="radio" value="normal" name="userType" v-model="userType"/>普通用户
+                    <input type="radio" value="vip" name="userType" v-model="userType"/>vip
+                    <button class="btn btn-default" onclick="search()">查询</button>
                 </div>
             </div>
             <!--工具栏/-->
@@ -49,39 +60,33 @@
             <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
                 <thead>
                 <tr>
-                    <th class="" style="padding-right:0px">
-                        <input id="selall" type="checkbox" class="icheckbox_square-blue">
-                    </th>
                     <th class="sorting_asc">用户ID</th>
                     <th class="sorting">姓名</th>
                     <th class="sorting">电话</th>
                     <th class="sorting">邮箱</th>
                     <th class="sorting">状态</th>
+                    <th class="sorting">密码</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>1</td>
-                    <td>李梦琪</td>
-                    <td>13402312232</td>
-                    <td>hujforeverlove@126.com</td>
-                    <td>
-                        <span>未注册成功</span>
-                    </td>
+                <tr v-for="item in users">
+                    <td>{{item.id}}</td>
+                    <td>{{item.NAME}}</td>
+                    <td>{{item.mobile}}</td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.STATUS}}</td>
+                    <td>{{item.PASSWORD}}</td>
                     <td class="text-center">
                         <button type="button" class="btn bg-olive btn-xs" data-toggle="modal"
-                                data-target="#sellerModal">详情
+                                data-target="#sellerModal" @click="vm.initEditProduct(item); vm.currentEditId = item.id; vm.isEdit = true;">修改
                         </button>
                     </td>
                 </tr>
                 </tbody>
             </table>
-            <!--数据列表/-->
-
-
         </div>
+        <div style=" position: relative; left: 40%;"><ul class="pagination" id="pagination1"></ul></div>
     </div>
 
 
@@ -104,32 +109,38 @@
                     <div id="myTabContent" class="tab-content">
                         <div class="tab-pane active in" id="home">
                             <br>
-                            <table class="table table-bordered table-striped" width="800px">
+                            <table class="table table-bordered table-striped" width="800px" id="editTr">
                                 <tr>
                                     <td>姓名</td>
-                                    <td>美琪</td>
+                                    <td><input type="text"/></td>
                                 </tr>
                                 <tr>
                                     <td>密码</td>
-                                    <td>123</td>
+                                    <td><input type="text"/></td>
                                 </tr>
                                 <tr>
                                     <td>手机</td>
-                                    <td>13900221212</td>
+                                    <td><input type="text"/></td>
                                 </tr>
                                 <tr>
                                     <td>邮箱</td>
-                                    <td>hujforeverlove@126.com</td>
+                                    <td><input type="text"/></td>
                                 </tr>
                                 <tr>
                                     <td>状态</td>
-                                    <td>vip</td>
+                                    <td><select style="width: 200px">
+                                        <option value="admin">管理员</option>
+                                        <option value="to be verified">待注册成功</option>
+                                        <option value="normal" selected = "selected" >正常</option>
+                                        <option value="vip">会员</option>
+                                    </select></td>
                                 </tr>
                             </table>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
+                        <button class="btn btn-success" data-dismiss="modal" v-if="isEdit" aria-hidden="true" @click="vm.editUser()">保存</button>
+                        <button class="btn btn-success" data-dismiss="modal" v-else @click="vm.addUser()" aria-hidden="true">添加</button>
                         <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
                     </div>
                 </div>
@@ -138,5 +149,179 @@
     </div>
 </div>
 </body>
+<script>
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            userType: "all",
+            users: [
+                {id: 1, NAME: "xiaohu", mobile: "139180XXXXX", email: "hwj@126.com", PASSWORD:"2288", STATUS: "admin"}
+                ],
+            searchContext: {},
+            isSearch: false,
+            pageSize: 10,
+            pageNum: 1,
+            isEdit: false,
+            currentEditId: 0
+        },
+        methods: {
+            getData: function() {
+                let data;
+                if(vm.isSearch) {
+                    data = vm.searchContext
+                } else {
+                    data = {}
+                }
+                data.pageNum = vm.pageNum
+                data.pageSize = vm.pageSize
+                $.ajax({
+                    type: "post",
+                    url: "/getUsers",
+                    data: data,
+                    dataType:"json",
+                    success: function (data) {
+                        vm.users = data.list;
+                        $('#pagination1').jqPaginator('option', {
+                            totalPages: (data.total - data.total % vm.pageSize) / vm.pageSize + (data.total % vm.pageSize !== 0 ? 1 : 0) + (data.total === 0 ? 1 : 0)
+                        });
+                    },
+                    error: function () {
+                        alert("fail")
+                    }
+                })
+            },
+            initEditProduct: function (item) {
+                let tb = document.getElementById('editTr');
+                let rows = tb.rows;
+                rows[0].cells[1].getElementsByTagName('input')[0].value = item.NAME
+                rows[1].cells[1].getElementsByTagName('input')[0].value = item.PASSWORD
+                rows[2].cells[1].getElementsByTagName('input')[0].value = item.mobile
+                rows[3].cells[1].getElementsByTagName('input')[0].value = item.email
+                rows[4].cells[1].getElementsByTagName('select')[0].value = item.STATUS
+            },
+            getTableValue: function () {
+                let tb = document.getElementById('editTr')
+                let rows = tb.rows
+                let data = {}
+                let NAME = rows[0].cells[1].getElementsByTagName('input')[0].value.replace(/(^\s*)|(\s*$)/g, "")
+                let PASSWORD = rows[1].cells[1].getElementsByTagName('input')[0].value.replace(/(^\s*)|(\s*$)/g, "")
+                let regNum = /^[0-9]*$/;
+                let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
+                let mobile = rows[2].cells[1].getElementsByTagName('input')[0].value.replace(/(^\s*)|(\s*$)/g, "")
+                let email = rows[3].cells[1].getElementsByTagName('input')[0].value.replace(/(^\s*)|(\s*$)/g, "")
+                let STATUS = rows[4].cells[1].getElementsByTagName('select')[0].value.replace(/(^\s*)|(\s*$)/g, "")
+                if (NAME !== "") {
+                    data.NAME = NAME
+                } else {
+                    alert("姓名不能为空")
+                    return null
+                }
+                if (PASSWORD !== "") {
+                    data.PASSWORD = PASSWORD
+                } else {
+                    alert("密码不能为空")
+                    return null
+                }
+                if ( mobile !== "" && regNum.test(mobile)) {
+                    data.mobile = mobile
+                } else if( mobile !== "" && !regNum.test(mobile)){
+                    alert("请输入正确的手机号")
+                    return null
+                }
+                if ( email !== "" && regEmail.test(email)) {
+                    data.email = email
+                } else if( email !== "" && !regEmail.test(email)){
+                    alert("请输入正确的邮箱")
+                    return null
+                }
+                data.STATUS = STATUS
+                return data
+            },
+            editUser: function () {
+                let data = vm.getTableValue();
+                if(data === null) {
+                    return
+                }
+                data.id = vm.currentEditId;
+                $.ajax({
+                    type: "post",
+                    url: "/editUser",
+                    data: data,
+                    success: function () {
+                        flash()
+                    },
+                    error: function () {
+                        alert("fail")
+                    }
+                })
+            },
+            addUser: function () {
+                let data = vm.getTableValue();
+                if(data === null) {
+                    return
+                }
+                $.ajax({
+                    type: "post",
+                    url: "/addUser",
+                    data: data,
+                    success: function () {
+                        flash()
+                    },
+                    error: function () {
+                        alert("fail")
+                    }
+                })
+            }
+        }
+    });
+    function flash() {
+        vm.isSearch = false;
+        vm.searchContext = {};
+        $("input#username").val("");
+        $("input#mobile").val("");
+        $("input#email").val("");
+        vm.getData()
+    }
 
+    function search() {
+        vm.searchContext = {}
+        vm.isSearch = true;
+        let regNum = /^[0-9]*$/;
+        let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
+        let username = $("input#username").val().replace(/(^\s*)|(\s*$)/g, "")
+        let mobile = $("input#mobile").val().replace(/(^\s*)|(\s*$)/g, "")
+        let email = $("input#email").val().replace(/(^\s*)|(\s*$)/g, "")
+        if (username !== "") {
+            vm.searchContext.NAME = username;
+        }
+        if ( mobile !== "" && regNum.test(mobile)) {
+            vm.searchContext.mobile = mobile
+        } else if( mobile !== "" && !regNum.test(mobile)){
+            alert("请输入正确的手机号")
+        }
+        if ( email !== "" && regEmail.test(email)) {
+            vm.searchContext.email = email
+        } else if( email !== "" && !regEmail.test(email)){
+            alert("请输入正确的邮箱")
+        }
+        if(vm.userType !== "all" && vm.userType !== "") {
+            vm.searchContext.STATUS = vm.userType;
+        }
+        vm.getData()
+    }
+    $.jqPaginator('#pagination1', {
+        totalPages: 1,
+        visiblePages: 3,
+        currentPage: 1,
+        first: '<li class="first"><a href="javascript:;"><<</a></li>',
+        prev: '<li class="prev"><a href="javascript:;"><</a></li>',
+        next: '<li class="next"><a href="javascript:;">></a></li>',
+        last: '<li class="last"><a href="javascript:;">>></a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+        onPageChange: function (num) {
+            vm.pageNum = num;
+            vm.getData()
+        }
+    });
+</script>
 </html>
