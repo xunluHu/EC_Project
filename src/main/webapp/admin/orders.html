@@ -5,7 +5,7 @@
     <!-- 页面meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>商家管理</title>
+    <title>订单管理</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
     <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
@@ -14,72 +14,70 @@
     <link rel="stylesheet" href="../css/style.css">
     <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-
+    <script src="../plugins/vue.js"></script>
+    <script src="../plugins/jQuery/jqPaginator.js"></script>
 </head>
 
 <body class="hold-transition skin-red sidebar-mini">
 <!-- .box-body -->
-<div class="box box-primary">
+<div class="box box-primary" id="app">
     <div class="box-header with-border">
         <h3 class="box-title">订单管理</h3>
     </div>
 
     <div class="box-body">
-
-        <!-- 数据表格 -->
         <div class="table-box">
-
-            <!--工具栏-->
-
             <div class="box-tools pull-right">
                 <div class="has-feedback">
-                    用户：<input/>
-                    订单号：<input/>
-                    <button class="btn btn-default">查询</button>
+                    用户：<input id="userName"/>
+                    订单号：<input id="orderCode"/>
+                    <button class="btn btn-default" onclick="selectListByContext()">查询</button>
                 </div>
             </div>
-            <!--工具栏/-->
+            <div class="pull-left">
+                <div class="form-group form-inline">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default" title="刷新" onclick="flash()"><i
+                                class="fa fa-check"></i> 刷新
+                        </button>
+                    </div>
+                </div>
+            </div>
 
             <!--数据列表-->
             <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
                 <thead>
                 <tr>
-                    <th class="" style="padding-right:0px">
-                        <input id="selall" type="checkbox" class="icheckbox_square-blue">
-                    </th>
                     <th class="sorting_asc">订单ID</th>
                     <th class="sorting">订单号</th>
+                    <th class="sorting">内容</th>
                     <th class="sorting">用户</th>
                     <th class="sorting">创建日期</th>
                     <th class="sorting">状态</th>
-                    <th class="text-center">操作</th>
+                    <!--<th class="text-center">操作</th>-->
                 </tr>
                 </thead>
                 <tbody>
+                <template v-for="item in orders">
                 <tr>
-                    <td><input type="checkbox"></td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>李梦琪</td>
-                    <td>2018-5-24</td>
-                    <td>已发货</td>
-                    <td class="text-center">
-                        <button type="button" class="btn bg-olive btn-xs" data-toggle="modal"
-                                data-target="#ordersModal">修改
-                        </button>
-                    </td>
+                    <td>{{item.id}}</td>
+                    <td>{{item.orderCode}}</td>
+                    <td ><p v-for="o in item.orderItemNames">{{o}}</p></td>
+                    <td>{{item.userName}}</td>
+                    <td>{{item.createDate}}</td>
+                    <td>{{item.STATUS}}</td>
+                    <!--<td class="text-center">-->
+                        <!--<button type="button" class="btn bg-olive btn-xs" data-toggle="modal"-->
+                                <!--data-target="#ordersModal">修改-->
+                        <!--</button>-->
+                    <!--</td>-->
                 </tr>
+                </template>
                 </tbody>
             </table>
-            <!--数据列表/-->
-
-
         </div>
-        <!-- 数据表格 /-->
-
-
+        <div style=" position: relative; left: 40%;"><ul class="pagination" id="pagination1"></ul></div>
     </div>
-    <!-- /.box-body -->
 
 
     <!-- 订单详情 -->
@@ -135,5 +133,81 @@
     </div>
 </div>
 </body>
+<script>
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            orders: [
+                {id: 1, orderCode: 1, orderItemNames:["商务英语","某江口译"], userName: "胡文杰", createDate: "2018-5-24", STATUS: "已下单"}
+                ],
+            isSearch: false,
+            searchContext: {},
+            pageSize: 10,
+            pageNum: 3
+        },
+        methods: {
+            getData: function () {
+                let data;
+                if(vm.isSearch) {
+                    data = vm.searchContext
+                } else {
+                    data = {}
+                }
+                data.pageNum = vm.pageNum
+                data.pageSize = vm.pageSize
+                console.log(data)
+                $.ajax({
+                    type: "post",
+                    url: "/getOrders",
+                    data: data,
+                    dataType: "json",
+                    success: function (data) {
+                        vm.orders = data.list
+                        $('#pagination1').jqPaginator('option', {
+                            totalPages: (data.total - data.total % vm.pageSize) / vm.pageSize + (data.total % vm.pageSize !== 0 ? 1 : 0) + (data.total === 0 ? 1 : 0)
+                        });
+                    },
+                    error: function () {
+                        alert("fail")
+                    }
+                })
 
+            }
+        }
+    })
+    function selectListByContext() {
+        vm.searchContext = {};
+        let userName = $("input#userName").val().replace(/(^\s*)|(\s*$)/g, "")
+        let orderCode = $("input#orderCode").val().replace(/(^\s*)|(\s*$)/g, "")
+        if(userName !== "") {
+            vm.searchContext.userName = userName
+        }
+        if(orderCode !== "") {
+            vm.searchContext.orderCode = orderCode
+        }
+        vm.isSearch = true
+        vm.getData()
+    }
+    function flash() {
+        vm.isSearch = false;
+        vm.searchContext = {};
+        $("input#userName").val("");
+        $("input#orderCode").val("");
+        vm.getData()
+    }
+    $.jqPaginator('#pagination1', {
+        totalPages: 1,
+        visiblePages: 3,
+        currentPage: 1,
+        first: '<li class="first"><a href="javascript:;"><<</a></li>',
+        prev: '<li class="prev"><a href="javascript:;"><</a></li>',
+        next: '<li class="next"><a href="javascript:;">></a></li>',
+        last: '<li class="last"><a href="javascript:;">>></a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+        onPageChange: function (num) {
+            vm.pageNum = num
+            vm.getData()
+        }
+    });
+</script>
 </html>

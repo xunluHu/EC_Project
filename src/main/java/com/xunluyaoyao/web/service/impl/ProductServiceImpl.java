@@ -60,4 +60,9 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> page = (Page<Product>)productMapper.selectByExample(example);
         return new PageResult(page.getTotal(), page.getResult());
     }
+
+    @Override
+    public Product selectByPrimaryKey(Integer id) {
+        return productMapper.selectByPrimaryKey(id);
+    }
 }

@@ -188,7 +188,7 @@
                     success: function (data) {
                         vm.products = data.list;
                         $('#pagination1').jqPaginator('option', {
-                            totalPages: (data.total - data.total % vm.pageSize) / vm.pageSize + (data.total % vm.pageSize !== 0 ? 1 : 0)
+                            totalPages: (data.total - data.total % vm.pageSize) / vm.pageSize + (data.total % vm.pageSize !== 0 ? 1 : 0) + (data.total === 0 ? 1 : 0)
                         });
                     },
                     error: function () {

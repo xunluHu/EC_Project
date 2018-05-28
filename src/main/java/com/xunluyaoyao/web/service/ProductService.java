@@ -13,4 +13,5 @@ public interface ProductService {
     void deleteByPrimaryKey(Integer id);
     PageResult findPage(int pageNum, int pageSize);
     PageResult findPageByCid(int pageNum, int pageSize, Integer cid);
+    Product selectByPrimaryKey(Integer id);
 }

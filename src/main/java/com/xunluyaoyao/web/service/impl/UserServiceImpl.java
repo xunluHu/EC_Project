@@ -54,4 +54,19 @@ public class UserServiceImpl implements UserService {
     public void addUser(User user) {
         userMapper.insert(user);
     }
+
+    @Override
+    public User selectByPrimaryKey(Integer id) {
+        return userMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<User> getUserByName(String name) {
+        UserExample example = new UserExample();
+        UserExample.Criteria criteria= example.createCriteria();
+        if(name != null) {
+            criteria.andNAMELike(name);
+        }
+        return userMapper.selectByExample(example);
+    }
 }
