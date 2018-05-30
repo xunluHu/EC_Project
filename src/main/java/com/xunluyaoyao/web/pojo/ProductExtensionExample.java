@@ -3,14 +3,14 @@ package com.xunluyaoyao.web.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductImageExample {
+public class ProductExtensionExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public ProductImageExample() {
+    public ProductExtensionExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -291,6 +291,76 @@ public class ProductImageExample {
 
         public Criteria andTYPENotBetween(String value1, String value2) {
             addCriterion("TYPE not between", value1, value2, "TYPE");
+            return (Criteria) this;
+        }
+
+        public Criteria andPansourceIsNull() {
+            addCriterion("pansource is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPansourceIsNotNull() {
+            addCriterion("pansource is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPansourceEqualTo(String value) {
+            addCriterion("pansource =", value, "pansource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPansourceNotEqualTo(String value) {
+            addCriterion("pansource <>", value, "pansource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPansourceGreaterThan(String value) {
+            addCriterion("pansource >", value, "pansource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPansourceGreaterThanOrEqualTo(String value) {
+            addCriterion("pansource >=", value, "pansource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPansourceLessThan(String value) {
+            addCriterion("pansource <", value, "pansource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPansourceLessThanOrEqualTo(String value) {
+            addCriterion("pansource <=", value, "pansource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPansourceLike(String value) {
+            addCriterion("pansource like", value, "pansource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPansourceNotLike(String value) {
+            addCriterion("pansource not like", value, "pansource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPansourceIn(List<String> values) {
+            addCriterion("pansource in", values, "pansource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPansourceNotIn(List<String> values) {
+            addCriterion("pansource not in", values, "pansource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPansourceBetween(String value1, String value2) {
+            addCriterion("pansource between", value1, value2, "pansource");
+            return (Criteria) this;
+        }
+
+        public Criteria andPansourceNotBetween(String value1, String value2) {
+            addCriterion("pansource not between", value1, value2, "pansource");
             return (Criteria) this;
         }
     }

@@ -53,7 +53,7 @@
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
-        <table tableName="productImage" domainObjectName="ProductImage" enableCountByExample="false"
+        <table tableName="productextension" domainObjectName="ProductExtension" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="true"
                selectByExampleQueryId="false">
             <property name="my.isgen.usekeys" value="true"/>

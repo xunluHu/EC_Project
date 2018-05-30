@@ -1,11 +1,13 @@
 package com.xunluyaoyao.web.pojo;
 
-public class ProductImage {
+public class ProductExtension {
     private Integer id;
 
     private Integer pid;
 
     private String TYPE;
+
+    private String pansource;
 
     public Integer getId() {
         return id;
@@ -29,5 +31,13 @@ public class ProductImage {
 
     public void setTYPE(String TYPE) {
         this.TYPE = TYPE == null ? null : TYPE.trim();
+    }
+
+    public String getPansource() {
+        return pansource;
+    }
+
+    public void setPansource(String pansource) {
+        this.pansource = pansource == null ? null : pansource.trim();
     }
 }

@@ -8,7 +8,7 @@
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
-    <result column="STATUS" jdbcType="VARCHAR" property="STATUS" />
+    <result column="STATUS" jdbcType="CHAR" property="STATUS" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -72,7 +72,7 @@
       createDate, uid, STATUS
       )
     values (#{orderCode,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{createDate,jdbcType=TIMESTAMP}, #{uid,jdbcType=INTEGER}, #{STATUS,jdbcType=VARCHAR}
+      #{createDate,jdbcType=TIMESTAMP}, #{uid,jdbcType=INTEGER}, #{STATUS,jdbcType=CHAR}
       )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xunluyaoyao.web.pojo.Order" useGeneratedKeys="true">
@@ -114,7 +114,7 @@
         #{uid,jdbcType=INTEGER},
       </if>
       <if test="STATUS != null">
-        #{STATUS,jdbcType=VARCHAR},
+        #{STATUS,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
@@ -137,7 +137,7 @@
         uid = #{uid,jdbcType=INTEGER},
       </if>
       <if test="STATUS != null">
-        STATUS = #{STATUS,jdbcType=VARCHAR},
+        STATUS = #{STATUS,jdbcType=CHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -149,7 +149,7 @@
       email = #{email,jdbcType=VARCHAR},
       createDate = #{createDate,jdbcType=TIMESTAMP},
       uid = #{uid,jdbcType=INTEGER},
-      STATUS = #{STATUS,jdbcType=VARCHAR}
+      STATUS = #{STATUS,jdbcType=CHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

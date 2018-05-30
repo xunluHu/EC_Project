@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xunluyaoyao.web.mapper.ProductImageMapper">
-  <resultMap id="BaseResultMap" type="com.xunluyaoyao.web.pojo.ProductImage">
+<mapper namespace="com.xunluyaoyao.web.mapper.ProductExtensionMapper">
+  <resultMap id="BaseResultMap" type="com.xunluyaoyao.web.pojo.ProductExtension">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="pid" jdbcType="INTEGER" property="pid" />
     <result column="TYPE" jdbcType="VARCHAR" property="TYPE" />
+    <result column="pansource" jdbcType="VARCHAR" property="pansource" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -36,16 +37,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, pid, TYPE
+    id, pid, TYPE, pansource
   </sql>
-  <select id="selectByExample" parameterType="com.xunluyaoyao.web.pojo.ProductImageExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.xunluyaoyao.web.pojo.ProductExtensionExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     'false' as QUERYID,
     <include refid="Base_Column_List" />
-    from productimage
+    from productextension
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -56,25 +57,30 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from productimage
+    from productextension
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from productimage
+    delete from productextension
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xunluyaoyao.web.pojo.ProductImage" useGeneratedKeys="true">
-    insert into productimage (pid, TYPE)
-    values (#{pid,jdbcType=INTEGER}, #{TYPE,jdbcType=VARCHAR})
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xunluyaoyao.web.pojo.ProductExtension" useGeneratedKeys="true">
+    insert into productextension (pid, TYPE, pansource
+      )
+    values (#{pid,jdbcType=INTEGER}, #{TYPE,jdbcType=VARCHAR}, #{pansource,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xunluyaoyao.web.pojo.ProductImage" useGeneratedKeys="true">
-    insert into productimage
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xunluyaoyao.web.pojo.ProductExtension" useGeneratedKeys="true">
+    insert into productextension
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="pid != null">
         pid,
       </if>
       <if test="TYPE != null">
         TYPE,
+      </if>
+      <if test="pansource != null">
+        pansource,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -84,10 +90,13 @@
       <if test="TYPE != null">
         #{TYPE,jdbcType=VARCHAR},
       </if>
+      <if test="pansource != null">
+        #{pansource,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xunluyaoyao.web.pojo.ProductImage">
-    update productimage
+  <update id="updateByPrimaryKeySelective" parameterType="com.xunluyaoyao.web.pojo.ProductExtension">
+    update productextension
     <set>
       <if test="pid != null">
         pid = #{pid,jdbcType=INTEGER},
@@ -95,13 +104,17 @@
       <if test="TYPE != null">
         TYPE = #{TYPE,jdbcType=VARCHAR},
       </if>
+      <if test="pansource != null">
+        pansource = #{pansource,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xunluyaoyao.web.pojo.ProductImage">
-    update productimage
+  <update id="updateByPrimaryKey" parameterType="com.xunluyaoyao.web.pojo.ProductExtension">
+    update productextension
     set pid = #{pid,jdbcType=INTEGER},
-      TYPE = #{TYPE,jdbcType=VARCHAR}
+      TYPE = #{TYPE,jdbcType=VARCHAR},
+      pansource = #{pansource,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -33,7 +33,9 @@
                     <button type="button" class="btn btn-default" title="新建" data-toggle="modal"
                             data-target="#editModal" onclick="vmEdit.isEdit = false"><i class="fa fa-file-o"></i> 新建
                     </button>
-                    <button type="button" class="btn btn-default" title="删除" onclick="deleteSelectedId()"><i class="fa fa-trash-o"></i> 删除</button>
+                    <button type="button" class="btn btn-default" title="删除" onclick="deleteSelectedId()"><i
+                            class="fa fa-trash-o"></i> 删除
+                    </button>
                     <button type="button" class="btn btn-default" title="刷新" onclick="flash()"><i
                             class="fa fa-refresh"></i> 刷新
                     </button>
@@ -79,12 +81,17 @@
                     <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal"
                             @click="initEditProduct(item); vmEdit.isEdit = true; vm.$data.currentEditId = item.id;">修改
                     </button>
+                    <button class="btn bg-olive btn-xs" data-toggle="modal" data-target="#addPicMode"
+                            @click="vm.$data.currentEditId = item.id; setSourceContext()">资源
+                    </button>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div style=" position: relative; left: 40%;"><ul class="pagination" id="pagination1"></ul></div>
+    <div style=" position: relative; left: 40%;">
+        <ul class="pagination" id="pagination1"></ul>
+    </div>
 </div>
 
 <!-- 编辑窗口 -->
@@ -134,9 +141,40 @@
 
             </div>
             <div class="modal-footer" id="appEdit">
-                <button class="btn btn-success" v-if="isEdit"data-dismiss="modal" aria-hidden="true" @click="vm.editProduct()">保存</button>
-                <button class="btn btn-success" v-else data-dismiss="modal" aria-hidden="true" @click="vm.addProduct()">添加</button>
+                <button class="btn btn-success" v-if="isEdit" data-dismiss="modal" aria-hidden="true"
+                        @click="vm.editProduct()">保存
+                </button>
+                <button class="btn btn-success" v-else data-dismiss="modal" aria-hidden="true" @click="vm.addProduct()">
+                    添加
+                </button>
                 <button class="btn btn-default" data-dismiss="modal" aria-hidden="true" onclick="vm.closeEditProduct()">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加图片-->
+<div class="modal fade" id="addPicMode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">图片:</h4>
+            </div>
+            <div class="modal-body">
+                <div style="position:relative; left: 35%">
+                    <div id="showPic"></div>
+                    <input id="addPic" type="file">
+                </div>
+                <div style="position:relative; left: 35%; margin-top: 20px">
+                    云盘地址:<input id="panResource" type="text" style="width: 250px">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" onclick="uploadPic()">
+                    保存
+                </button>
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true" onclick="clearResource()">
                     关闭
                 </button>
             </div>
@@ -228,7 +266,7 @@
                     categoryName: rows[0].cells[1].getElementsByTagName('input')[0].value.replace(/(^\s*)|(\s*$)/g, "")
                 }
             },
-            editProduct: function() {
+            editProduct: function () {
                 vmEdit.isEdit = true;
                 var data = vm.getTableValue()
                 data.id = vm.currentEditId
@@ -238,7 +276,7 @@
                     data: data,
                     success: function (data) {
                         if (data === "category") {
-                           alert("你所输入的分类名不存在")
+                            alert("你所输入的分类名不存在")
                         }
                         vm.getData()
                     },
@@ -247,7 +285,7 @@
                     }
                 })
             },
-            addProduct: function() {
+            addProduct: function () {
                 vmEdit.isEdit = false;
                 let data = vm.getTableValue()
                 $.ajax({
@@ -265,13 +303,13 @@
                     }
                 })
             },
-            selectCurrentId: function(e, id) {
+            selectCurrentId: function (e, id) {
                 var checked = e.target.checked
-                if(checked) {
+                if (checked) {
                     vm.selectIds.push(id)
                 } else {
                     for (let i = 0; i < vm.selectIds.length; i++) {
-                        if(vm.selectIds[i] === id) {
+                        if (vm.selectIds[i] === id) {
                             vm.selectIds.splice(i, 1)
                             return
                         }
@@ -280,21 +318,23 @@
             }
         }
     })
+
     function selectAll() {
         let tb = document.getElementById('app');
         let rows = tb.rows;
         vm.selectIds = []
-        if($("input#selectAll").prop("checked")) {
-            for(let i = 0; i < rows.length; ++i) {
+        if ($("input#selectAll").prop("checked")) {
+            for (let i = 0; i < rows.length; ++i) {
                 rows[i].cells[0].getElementsByTagName('input')[0].checked = true;
                 vm.selectIds.push(parseInt(rows[i].cells[1].innerText))
             }
         } else {
-            for(let i = 0; i < rows.length; ++i) {
+            for (let i = 0; i < rows.length; ++i) {
                 rows[i].cells[0].getElementsByTagName('input')[0].checked = false;
             }
         }
     }
+
     function deleteSelectedId() {
         if (vm.selectIds.length === 0) {
             return
@@ -309,7 +349,7 @@
                     let tb = document.getElementById('app');
                     let rows = tb.rows;
                     vm.selectIds = []
-                    for(let i = 0; i < rows.length; ++i) {
+                    for (let i = 0; i < rows.length; ++i) {
                         rows[i].cells[0].getElementsByTagName('input')[0].checked = false;
                     }
                 } else {
@@ -321,19 +361,22 @@
             }
         })
     }
+
     function flash() {
         vm.isSelect = false
         $("input#categoryName").val("")
         vm.getData()
     }
+
     function selectListByCategoryName() {
         vm.categoryName = $("input#categoryName").val().replace(/(^\s*)|(\s*$)/g, "")
-        if(vm.categoryName === "") {
+        if (vm.categoryName === "") {
             return
         }
         vm.isSelect = true
         vm.getData()
     }
+
     $.jqPaginator('#pagination1', {
         totalPages: 1,
         visiblePages: 3,
@@ -348,5 +391,91 @@
             vm.getData()
         }
     });
+
+    function dealWithPic() {
+        var upimg = document.querySelector('#addPic');
+        upimg.addEventListener('change', function (e) {
+            var files = this.files;
+            if (files.length) {
+                checkFile(this.files);
+            }
+        });
+
+        function checkFile(files) {
+            var file = files[0];
+            var reader = new FileReader();
+            var showPic = document.getElementById("showPic")
+            if (!/image\/\w+/.test(file.type)) {
+                showPic.innerHTML = "请确保文件为图像类型";
+                return false;
+            }
+            // onload是异步操作
+            reader.onload = function (e) {
+                showPic.innerHTML = '<img style="width: 200px; height: auto; margin-bottom: 20px" src="' + e.target.result + '" alt="img">';
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    dealWithPic()
+
+    function uploadPic() {
+        var showPic = document.getElementById("showPic")
+        var upimg = document.querySelector('#addPic');
+        var formData = new FormData();
+        if (showPic.innerHTML === "请确保文件为图像类型" || upimg.files.length <= 0) {
+            alert("保存失败")
+            return
+        }
+        formData.append("panSource", $("input#panResource").val().replace(/(^\s*)|(\s*$)/g, ""))
+        formData.append("file", upimg.files[0])
+        formData.append("id", vm.currentEditId)
+        $.ajax({
+            url: "/addProductSource",
+            type: 'POST',
+            data: formData,
+// 告诉jQuery不要去处理发送的数据
+            processData: false,
+// 告诉jQuery不要去设置Content-Type请求头
+            contentType: false,
+            success: function (responseStr) {
+                if (responseStr.status === 0) {
+                    console.log("成功" + responseStr);
+                } else {
+                    console.log("失败");
+                }
+            },
+            error: function (responseStr) {
+                console.log("error");
+            }
+        });
+        clearResource();
+    }
+    function clearResource() {
+        var showPic = document.getElementById("showPic")
+        showPic.innerHTML = ""
+        $("input#panResource").val("")
+        $("input#addPic").val("")
+    }
+
+    function setSourceContext() {
+        $.ajax({
+            type: "post",
+            url: "/getProductResource",
+            data: {id: vm.currentEditId},
+            success: function (data) {
+                var jsonData = JSON.parse(data)
+                if (jsonData.pid !== undefined) {
+                    var showPic = document.getElementById("showPic")
+                    //图片的重新加载
+                    showPic.innerHTML = '<img style="width: 200px; height: auto; margin-bottom: 20px" src="'+ '/images/productsImage/'+ jsonData.pid +"."+ jsonData.suffix + '" alt="img">';
+                    $("input#panResource").val(jsonData.panSource)
+                }
+            },
+            error: function () {
+                alert("fail")
+            }
+        })
+    }
 </script>
 </html>
