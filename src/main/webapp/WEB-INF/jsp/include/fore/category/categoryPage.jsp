@@ -19,23 +19,25 @@
 
 <div class="categoryPageDiv">
     <div class="categoryProducts">
-        <c:forEach items="${c.products}" var="p" varStatus="stc">
-            <c:if test="${stc.count<=categorycount}">
-                <div class="productUnit" price="${p.promotePrice}">
-                    <div class="productUnitFrame">
-                        <a href="foreProduct?pid=${p.id}">
-                            <%--<img class="productImage" src="img/productSingle_middle/${p.productImage.id}.jpg">--%>
-                            <img class="productImage" src="/images/productImage/book.jpg">
-                        </a>
-                        <span class="productPrice">¥<fmt:formatNumber type="number" value="${p.promotePrice}"
-                                                                      minFractionDigits="2"/></span>
-                        <a class="productLink" href="">
-                                ${fn:substring(p.name, 0, 50)}
-                        </a>
-                        <a class="xunluLink" href="">驯鹿特卖</a>
+        <c:forEach items="${tclist}" var="c" varStatus="i">
+            <c:forEach items="${c.products}" var="p" varStatus="j">
+                <c:if test="${i.count * j.count <=categorycount}">
+                    <div class="productUnit" price="${p.promotePrice}">
+                        <div class="productUnitFrame">
+                            <a href="foreProduct?pid=${p.id}">
+                                    <%--<img class="productImage" src="img/productSingle_middle/${p.productImage.id}.jpg">--%>
+                                <img class="productImage" src="/images/productImage/book.jpg">
+                            </a>
+                            <span class="productPrice">¥<fmt:formatNumber type="number" value="${p.promotePrice}"
+                                                                          minFractionDigits="2"/></span>
+                            <a class="productLink" href="">
+                                    ${fn:substring(p.name, 0, 50)}
+                            </a>
+                            <a class="xunluLink" href="">驯鹿特卖</a>
+                        </div>
                     </div>
-                </div>
-            </c:if>
+                </c:if>
+            </c:forEach>
         </c:forEach>
         <div style="clear:both"></div>
     </div>

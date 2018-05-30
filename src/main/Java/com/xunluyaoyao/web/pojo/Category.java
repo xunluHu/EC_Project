@@ -9,6 +9,16 @@ public class Category {
 
     private List<Product> products;
 
+    private List<Category> nextCategorys;
+
+    public List<Category> getNextCategorys() {
+        return nextCategorys;
+    }
+
+    public void setNextCategorys(List<Category> nextCategorys) {
+        this.nextCategorys = nextCategorys;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -32,5 +42,6 @@ public class Category {
     public void setProducts(List<Product> products) {
         this.products = products;
     }
+
 
 }

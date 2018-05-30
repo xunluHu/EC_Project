@@ -10,8 +10,26 @@
         </collection>
     </resultMap>
 
+    <resultMap type="Category" id="nextCategory">
+        <id property="id" column="id"/>
+        <collection property="nextCategorys" column="id" select="com.xunluyaoyao.web.mapper.CategoryMapper.getNextCategorys">
+        </collection>
+    </resultMap>
+
     <select id="selectByPrimaryKey" parameterType="Integer" resultMap="categoryBean">
         select * from category where id = #{id}
+    </select>
+
+    <select id="findParentAndNextCategorys" parameterType="Integer" resultMap="categoryBean">
+        select * from category where id = #{id} or pcid = #{id}
+    </select>
+
+    <select id="getParentCategorys" resultMap="nextCategory">
+        select * from category where pcid = 0
+    </select>
+
+    <select id="getNextCategorys" parameterType="Integer" resultType="Category">
+        select * from category where pcid = #{id}
     </select>
 
     <insert id="insert" parameterType="Category" useGeneratedKeys="true" keyProperty="id">

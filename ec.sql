@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS ec_project;
-CREATE DATABASE ec_project;
+CREATE DATABASE ec_project CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE ec_project;
 CREATE TABLE users (
   id INT(11) NOT NULL AUTO_INCREMENT,

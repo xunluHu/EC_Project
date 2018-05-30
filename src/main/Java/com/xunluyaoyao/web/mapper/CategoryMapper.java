@@ -13,4 +13,10 @@ public interface CategoryMapper {
     int insert(Category category);
 
     int update(Category category);
+
+    List<Category> getParentCategorys();
+
+    List<Category> getNextCategorys(Integer pcid);
+
+    List<Category> findParentAndNextCategorys(Integer id);
 }

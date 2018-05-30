@@ -40,6 +40,8 @@ public class ForeController {
                 }
             }
         }
+        List<Category> list = categoryService.getParentCategorys();
+        model.addAttribute("pCategory", list);
         model.addAttribute("user", user);
         return "fore/home";
     }
@@ -56,8 +58,8 @@ public class ForeController {
 
     @RequestMapping("Category")
     public String categoryMove(Model model, int id) {
-        Category category = categoryService.selectByPrimaryKey(id);
-        model.addAttribute("c", category);
+        List<Category> list = categoryService.findParentAndNextCategorys(id);
+        model.addAttribute("tclist", list);
         return "fore/category";
     }
 

@@ -10,102 +10,29 @@
 <div class="categoryWithCarousel">
     <div style="position: relative">
         <div class="categoryMenu ">
-            <div class="eachCategory" cid="1">
-                <span class="glyphicon glyphicon-link"></span>
-                <a href="#nowhere">我的中国梦</a>
-            </div>
-            <div class="eachCategory" cid="2">
-                <span class="glyphicon glyphicon-link"></span>
-                <a href="#nowhere">IT精英必读</a>
-            </div>
-            <div class="eachCategory" cid="3">
-                <span class="glyphicon glyphicon-link"></span>
-                <a href="#nowhere">琴棋书画</a>
-            </div>
-            <div class="eachCategory" cid="4">
-                <span class="glyphicon glyphicon-link"></span>
-                <a href="#nowhere">金融分析</a>
-            </div>
-            <div class="eachCategory" cid="5">
-                <span class="glyphicon glyphicon-link"></span>
-                <a href="Category?id=5">外语学习</a>
-            </div>
-            <div class="eachCategory" cid="6">
-                <span class="glyphicon glyphicon-link"></span>
-                <a href="#nowhere">爱的供养</a>
-            </div>
+            <c:if test="${!empty pCategory}">
+                <c:forEach items="${pCategory}" var="pc">
+                    <div class="eachCategory" cid="${pc.id}">
+                        <span class="glyphicon glyphicon-link"></span>
+                        <a href="Category?id=${pc.id}">${pc.name}</a>
+                    </div>
+                </c:forEach>
+            </c:if>
         </div>
     </div>
     <div style="position: relative;left: 0;top: 0;">
-        <div class="productsAsideCategorys" cid="1">
-            <div class="row">
-                <a href="#nowhere">国富论</a>
-                <a href="#nowhere">道德情操论</a>
-                <a href="#nowhere">战争与和平</a>
-                <a href="#nowhere">作为意志和表象的世界</a>
-                <div class="seperator"></div>
-            </div>
-            <div class="row">
-                <a href="#nowhere">剑桥中国史</a>
-                <a href="#nowhere">万历十五年</a>
-                <a href="#nowhere">中国历代政治得失</a>
-                <div class="seperator"></div>
-            </div>
-        </div>
-        <div class="productsAsideCategorys" cid="2">
-            <div class="row">
-                <a href="#nowhere">网络协议TCP</a>
-                <a href="#nowhere">服务器编程之Socket</a>
-                <a href="#nowhere">linux操作系统解析</a>
-                <a href="#nowhere">C++与Java，一朝天子一朝臣</a>
-                <div class="seperator"></div>
-            </div>
-            <div class="row">
-                <a href="#nowhere">Opengl与OpengCV中的图像学原理</a>
-                <a href="#nowhere">nodejs/python的崛起</a>
-                <a href="#nowhere">Go的矛与盾</a>
-                <a href="#nowhere">人工智能</a>
-                <div class="seperator"></div>
-            </div>
-        </div>
-        <div class="productsAsideCategorys" cid="3">
-            <div class="row">
-                <a href="#nowhere">琴</a>
-                <a href="#nowhere">棋</a>
-                <a href="#nowhere">书</a>
-                <a href="#nowhere">画</a>
-                <div class="seperator"></div>
-            </div>
-        </div>
-        <div class="productsAsideCategorys" cid="4">
-            <div class="row">
-                <a href="#nowhere">金融与经济</a>
-                <a href="#nowhere">数据分析的数学知识</a>
-                <a href="#nowhere">巧用Excel</a>
-                <a href="#nowhere">数据分析语言</a>
-                <a href="#nowhere">什么是"大数据"</a>
-                <div class="seperator"></div>
-            </div>
-        </div>
-        <div class="productsAsideCategorys" cid="5">
-            <div class="row">
-                <a href="#nowhere">英语</a>
-                <a href="#nowhere">日语</a>
-                <a href="#nowhere">德语</a>
-                <a href="#nowhere">小语种</a>
-                <div class="seperator"></div>
-            </div>
-        </div>
-        <div class="productsAsideCategorys" cid="6">
-            <div class="row">
-                <a href="#nowhere">纺织材料学</a>
-                <a href="#nowhere">西方服装史</a>
-                <a href="#nowhere">服装面辅料</a>
-                <a href="#nowhere">流水线生产</a>
-                <a href="#nowhere">过去，现在与未来</a>
-                <div class="seperator"></div>
-            </div>
-        </div>
+        <c:if test="${!empty pCategory}">
+            <c:forEach items="${pCategory}" var="pc">
+                <div class="productsAsideCategorys" cid="${pc.id}">
+                    <div class="row">
+                        <c:forEach items="${pc.nextCategorys}" var="nc">
+                            <a href="Category?id=${nc.id}">${nc.name}</a>
+                        </c:forEach>
+                        <div class="seperator"></div>
+                    </div>
+                </div>
+            </c:forEach>
+        </c:if>
     </div>
 
     <div class="headBar">
@@ -114,9 +41,9 @@
             <span style="margin-left:10px">商品分类</span>
         </div>
         <div class="rightMenu">
-            <span><a href="#nowhere">好好学习</a></span>
-            <span><a href="#nowhere">随便玩玩</a></span>
-            <span><a href="#nowhere">顺便健身</a></span>
+            <span><a href="https://www.liaoxuefeng.com/">好好学习</a></span>
+            <span><a href="https://www.battlenet.com.cn/zh/">随便玩玩</a></span>
+            <span><a href="http://www.chinawalking.net.cn/">顺便健身</a></span>
         </div>
     </div>
     <div class="carousel">
