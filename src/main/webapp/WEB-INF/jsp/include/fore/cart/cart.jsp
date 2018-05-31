@@ -53,7 +53,7 @@
             <c:forEach items="${os}" var="o" varStatus="stc">
                 <tr>
                     <td class="checked"><input class="check-one check" type="checkbox"/></td>
-                    <td class="goods"><img src="/images/productImage/ship.jpg" alt=""/><span>${o.product.name}</span></td>
+                    <td class="goods"><img src="/images/productsImage/${o.product.id}.jpg" alt=""/><span>${o.product.name}</span></td>
                     <td class="cartProductPrice">${o.product.originalPrice}</td>
                     <td class="count">
                         <span class="reduce">-</span>

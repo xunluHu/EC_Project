@@ -25,6 +25,8 @@ public class ForeController {
     OrderItemService orderItemService;
     @Autowired
     OrderService orderService;
+    @Autowired
+    ProductSourceService productSourceService;
 
     @RequestMapping("forehome")
     public String home(Model model, HttpSession session, HttpServletRequest request) {

@@ -7,6 +7,11 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" isELIgnored="false" %>
+<script>
+    function changeHref(location) {
+        window.location.href= location;
+    }
+</script>
 <div class="categoryWithCarousel">
     <div style="position: relative">
         <div class="categoryMenu ">
@@ -48,9 +53,9 @@
     </div>
     <div class="carousel">
         <figure class="carouselImage">
-            <img src="/images/homeBody/ai.jpg" alt="">
-            <img src="/images/homeBody/book.jpg" alt="">
-            <img src="/images/homeBody/game.jpg" alt="">
+            <img src="/images/homeBody/ai.jpg" alt="" onclick='changeHref("/Category?id=16")'>
+            <img src="/images/homeBody/book.jpg" alt="" onclick='changeHref("/Category?id=30")'>
+            <img src="/images/homeBody/game.jpg" alt="" onclick='changeHref("/Category?id=15")'>
         </figure>
         <nav class="nav-circlepop">
             <a class="prev prevBtn">

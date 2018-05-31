@@ -16,7 +16,7 @@
     <div class="separator">致我们的星辰大海---￥${p.originalPrice}</div>
     <img class="productDetailImage" src="/images/productImage/ship.jpg">
     <div class="buyDiv">
-        <button class="buyButton">立即获取</button>
+        <button class="buyButton">购物车统一获取</button>
         <div class="calculateArea">
             <span class="reduce">-</span>
             <input class="count-input" type="text" value="1" maxLength="2" disabled="true"/>

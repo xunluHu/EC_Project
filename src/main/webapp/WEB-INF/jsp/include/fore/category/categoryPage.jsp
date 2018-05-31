@@ -25,15 +25,14 @@
                     <div class="productUnit" price="${p.promotePrice}">
                         <div class="productUnitFrame">
                             <a href="foreProduct?pid=${p.id}">
-                                    <%--<img class="productImage" src="img/productSingle_middle/${p.productImage.id}.jpg">--%>
-                                <img class="productImage" src="/images/productImage/book.jpg">
+                                <img class="productImage" src="/images/productsImage/${p.id}.jpg" onerror="this.onerror=null;this.src='/images/productImage/book.jpg'">
                             </a>
                             <span class="productPrice">¥<fmt:formatNumber type="number" value="${p.promotePrice}"
                                                                           minFractionDigits="2"/></span>
-                            <a class="productLink" href="">
+                            <a class="productLink" href="foreProduct?pid=${p.id}">
                                     ${fn:substring(p.name, 0, 50)}
                             </a>
-                            <a class="xunluLink" href="">驯鹿特卖</a>
+                            <a class="xunluLink" href="#">驯鹿特卖</a>
                         </div>
                     </div>
                 </c:if>

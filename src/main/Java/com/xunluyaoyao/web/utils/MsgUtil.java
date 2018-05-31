@@ -130,6 +130,6 @@ public class MsgUtil {
         }
     }
     public static void main(String[] args)  throws ClientException, InterruptedException {
-        sendSmsAndGetResponse("loveyouhoney", "18817327234");
+        //sendSmsAndGetResponse("loveyouhoney", "18817327234");
     }
 }

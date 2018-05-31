@@ -19,17 +19,6 @@ public class Product {
 
     private Date createDate;
 
-    //额外添加图片
-    ProductImage productImage;
-
-    public ProductImage getProductImage() {
-        return productImage;
-    }
-
-    public void setProductImage(ProductImage productImage) {
-        this.productImage = productImage;
-    }
-
     public Integer getId() {
         return id;
     }
