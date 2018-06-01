@@ -6,7 +6,7 @@ public class User {
     private String password;
     private String mobile;
     private String email;
-    private String status;
+    private String STATUS;
     private String verification_code;
 
     public String getMobile() {
@@ -25,12 +25,12 @@ public class User {
         this.email = email;
     }
 
-    public String getStatus() {
-        return status;
+    public String getSTATUS() {
+        return STATUS;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setSTATUS(String status) {
+        this.STATUS = status;
     }
 
     public String getVerification_code() {

@@ -70,7 +70,7 @@
     <div class="foot" id="foot">
         <label class="fl select-all"><input type="checkbox" class="check-all check"/>&nbsp;全选</label>
         <a class="fl delete" id="deleteAll" href="javascript:;">删除</a>
-        <button class="fr getIt" onclick="getIt()">一键获取</button>
+        <button class="fr getIt" onclick="getIt()">全部获取</button>
         <div class="fr total">合计：￥<span id="priceTotal">0.00</span></div>
         <div class="fr selected" id="selected">已选商品<span id="selectedTotal">0</span>件
             <!-- <span class="arrow up">︽</span><span class="arrow down">︾</span> -->

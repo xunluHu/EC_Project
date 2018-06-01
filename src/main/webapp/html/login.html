@@ -54,25 +54,30 @@
                 var password = $("#userRegisterPassword1").val().replace(/(^\s*)|(\s*$)/g, "");
                 var email = $("form#registerForm input#email").val().replace(/(^\s*)|(\s*$)/g, "");
                 var mobile = $("form#registerForm input#mobile").val().replace(/(^\s*)|(\s*$)/g, "");
+                var code = $("form#registerForm input#code").val().replace(/(^\s*)|(\s*$)/g, "");
                 if (name.length == 0 || password.length == 0 || email.length == 0) {
                     alert("注册时：请正确输入账号密码");
                 } else if ($("#userRegisterPassword1").val() != $("#userRegisterPassword2").val()) {
                     alert("两次设置密码不一样，请重新输入");
                 } else if(!myreg.test( $("form#registerForm input#email").val().replace(/(^\s*)|(\s*$)/g, ""))) {
                     alert("请输入正确的邮箱格式")
-                } else {
+                } else if(code == ""){
+                    alert("请输入验证码")
+                } else{
                     $.ajax({
                             url: "/user_register",
                             type: "Post",
                             content: "application/json",
-                            data: JSON.stringify({name: name, password: password, email: email, mobile: mobile}),
+                            data: JSON.stringify({name: name, password: password, email: email, mobile: mobile, code: code}),
                             success: function (data) {
                                 if (data == "success") {
-                                    alert("请登录邮箱验证");
+                                    alert("注册成功");
                                 } else if(data == "nameRepeat"){
                                     alert("该用户名已经被使用");
-                                } else if(data == "emailError") {
-                                    alert("邮件发送失败");
+                                } else if (data == "codeError") {
+                                    alert("验证码输入错误")
+                                } else {
+                                    alert("\"服务器繁忙请稍后再试\"");
                                 }
                             },
                             error: function () {
@@ -83,6 +88,42 @@
                 }
             });
         });
+
+        function sendCode() {
+            let currentMils = 60;
+            let mobile = $("form#registerForm input#mobile").val().replace(/(^\s*)|(\s*$)/g, "");
+            let regNum =  /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/;
+            if (!regNum.test(mobile)) {
+                alert("请输入正确手机号")
+                return
+            }
+            $("input#sendCode").attr("disabled" ,"true")
+            let int = setInterval(function () {
+                if(currentMils === 0) {
+                    $("input#sendCode").removeAttr("disabled");
+                    $("input#sendCode").val("发送验证码");
+                    window.clearInterval(int);
+                    return;
+                }
+                $("input#sendCode").val("已发送(" + --currentMils + ")s");
+            }, 1000)
+            $.ajax({
+                    url: "/user_sendCode",
+                    type: "Post",
+                    data: {mobile: mobile},
+                    success: function (data) {
+                        if (data == "success") {
+                            alert("请输入手机验证码");
+                        } else if(data == "emailError") {
+                            alert("手机验证码发送失败");
+                        }
+                    },
+                    error: function () {
+                        alert("服务器繁忙请稍后再试");
+                    }
+                }
+            )
+        }
     </script>
     <!-- //Meta-Tags -->
 
@@ -134,14 +175,16 @@
     <div class="register w3layouts agileits">
         <h2>注 册</h2>
         <form id="registerForm" method="post" >
-            <input id="userRegistername" type="text" Name="name" placeholder="用户名(*)">
-            <input id="userRegisterPassword1" type="password" Name="password" placeholder="请输入密码(*)">
-            <input id="userRegisterPassword2" type="password" Name="passwordRepeat" placeholder="请确认密码(*)">
-            <input id="email" type="text" Name="email" placeholder="邮箱(*)" required="">
-            <input id="mobile" type="text" Name="mobile" placeholder="手机" required="">
+            <input id="userRegistername" type="text" Name="name" placeholder="用户名*">
+            <input id="userRegisterPassword1" type="password" Name="password" placeholder="请输入密码*">
+            <input id="userRegisterPassword2" type="password" Name="passwordRepeat" placeholder="请确认密码*">
+            <input id="email" type="text" Name="email" placeholder="邮箱*(发货时使用)" required="">
+            <input id="mobile" type="text" Name="mobile" placeholder="手机*" required="">
+            <input id="code" type="text" Name="code" placeholder="验证码*" required="">
         </form>
         <div class="send-button w3layouts agileits">
             <input id="registerBtn" type="submit" value="免费注册">
+            <input id="sendCode" type="button" value="发送验证码" onclick="sendCode()">
         </div>
         <div class="clear"></div>
     </div>
