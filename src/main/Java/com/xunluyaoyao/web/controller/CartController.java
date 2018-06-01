@@ -4,10 +4,8 @@ package com.xunluyaoyao.web.controller;
 import com.xunluyaoyao.web.pojo.Order;
 import com.xunluyaoyao.web.pojo.OrderItem;
 import com.xunluyaoyao.web.pojo.User;
-import com.xunluyaoyao.web.service.CategoryService;
-import com.xunluyaoyao.web.service.OrderItemService;
-import com.xunluyaoyao.web.service.OrderService;
-import com.xunluyaoyao.web.service.ProductService;
+import com.xunluyaoyao.web.service.*;
+import com.xunluyaoyao.web.utils.MailQueueProducer;
 import com.xunluyaoyao.web.utils.UUIDUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,6 +20,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Controller
@@ -34,6 +34,12 @@ public class CartController {
     OrderItemService orderItemService;
     @Autowired
     OrderService orderService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    ProductSourceService productSourceService;
+    @Autowired
+    MailQueueProducer mailQueueProducer;
 
     @RequestMapping("/addCart")
     public void addCart(HttpServletResponse response, HttpSession session, Integer pid, Integer number) throws IOException {
@@ -99,7 +105,8 @@ public class CartController {
     @RequestMapping("/getIt")
     public void getIt(HttpSession session, HttpServletResponse response, HttpServletRequest request) throws IOException {
         PrintWriter out = response.getWriter();
-        User user = (User)session.getAttribute("user");
+        User user = userService.getByName(((User)session.getAttribute("user")).getName());
+
         OrderItem orderItem = new OrderItem();
         Order order = new Order();
         orderItem.setUid(user.getId());
@@ -118,9 +125,8 @@ public class CartController {
         if (jsonArray.length() > 0) {
             String orderCode = user.getId() + UUIDUtil.getOrderIdByUUId();
             order.setOrderCode(orderCode);
-            //TODO：暂时写死
-            order.setMobile("18817327234");
-            order.setEmail("hwuenjiedeyouxiang@126.com");
+            order.setMobile(user.getMobile());
+            order.setEmail(user.getEmail());
             order.setCreateDate(new Date());
             order.setUid(user.getId());
             orderService.createOrder(order);
@@ -132,13 +138,25 @@ public class CartController {
             out.write("error");
             return;
         }
+        String emailContext = "<table border=\"1\">";
         for(int i = 0; i < jsonArray.length(); i++) {
             JSONObject object = jsonArray.getJSONObject(i);
-            orderItem.setPid(Integer.parseInt((String)object.get("pid")));
+            Integer pid = Integer.parseInt((String)object.get("pid"));
+            orderItem.setPid(pid);
             orderItem.setNumber(Integer.parseInt((String)object.get("number")));
             orderItem.setOid(res.getId());
             orderItemService.updateOidAndNumber(orderItem);
+            emailContext += "<tr>" +
+                    "<th>" + productService.selectById(pid).getName() +"</th>" +
+                    "<th>" + productSourceService.getProductSourceByPid(pid).get(0).getPansource() + "</th>" +
+                    "</tr>";
         }
+        emailContext += "</table>";
+        System.out.println(emailContext);
+        Map<String, String> requestMap = new HashMap<>();
+        requestMap.put("email", user.getEmail());
+        requestMap.put("code", emailContext);
+        mailQueueProducer.sendMap(requestMap);
         out.write("success");
     }
 }
