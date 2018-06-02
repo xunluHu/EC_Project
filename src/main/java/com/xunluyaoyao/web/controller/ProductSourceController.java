@@ -46,6 +46,7 @@ public class ProductSourceController {
         if (productSourceService.getProductSourceByPid(id).size() == 0) {
             productSourceService.add(productExtension);
         } else {
+            productExtension.setId(productSourceService.getProductSourceByPid(id).get(0).getId());
             productSourceService.updateByPrimaryKeySelective(productExtension);
         }
         return "success";
