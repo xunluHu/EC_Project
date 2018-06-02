@@ -138,10 +138,11 @@ function carousel(root) {
 }
 
 //使用js代码自动计算需要插入的高让footer沉底
+//body的高度计算会因为加载的先后导致不稳定,加延时影响用户体验直接把高度写死
 $(function () {
-    if ($("body").height() < $(window).height()) {
-        $("div.footerBottom").css("height", $(window).height() - $("body").height())
-    }
+        if ($("body").height() < $(window).height()) {
+            $("div.footerBottom").css("height", $(window).height() - $("body").height())
+        }
 })
 
 function calculateFooterHeight() {
@@ -153,14 +154,11 @@ function calculateFooterHeight() {
 }
 
 //当多屏切换或者窗口大小改变时自动计算
-$(window).resize(function () {
-        if ($("body").height() <= $(window).height()) {
-            $("div.footerBottom").css("height", parseInt($("div.footerBottom").css("height")) + $(window).height() - $("body").height())
-        } else {
-            $("div.footerBottom").css("height", parseInt($("div.footerBottom").css("height")) - ($("body").height() - $(window).height()))
+$($(window).resize(
+    function () {
+        $("div.footerBottom").css("height", 0)
+        if ($("body").height() < $(window).height()) {
+            $("div.footerBottom").css("height", $(window).height() - $("body").height())
         }
     }
-)
-
-
-
+))

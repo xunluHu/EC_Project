@@ -51,7 +51,7 @@
             <span><a href="http://www.chinawalking.net.cn/">顺便健身</a></span>
         </div>
     </div>
-    <div class="carousel">
+    <div class="carousel" data-gap="10">
         <figure class="carouselImage">
             <img src="/images/homeBody/ai.jpg" alt="" onclick='changeHref("/Category?id=16")'>
             <img src="/images/homeBody/book.jpg" alt="" onclick='changeHref("/Category?id=30")'>

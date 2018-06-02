@@ -23,6 +23,7 @@ nav.top span, nav.top a {
 }
 
 nav.top {
+    height: 25px;
     background-color: #f2f2f2;
 }
 
@@ -88,6 +89,7 @@ nav.top a:hover {
 
 div.categoryWithCarousel{
     width: 100%;
+    height: 700px;
     position: relative;
 }
 div.categoryWithCarousel div.headBar{
@@ -242,7 +244,7 @@ div.productUnit div.productInfo{
 /*productPart*/
 div.productContext {
     max-width: 450px;
-    height: 100%;
+    height: 700px;
     margin: 0 auto;
 }
 

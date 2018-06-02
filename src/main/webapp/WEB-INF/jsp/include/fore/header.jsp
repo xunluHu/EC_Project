@@ -19,9 +19,9 @@
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
-    <script src="js/fore/fore.js"></script>
+    <script src="js/fore/fore1.js"></script>
     <script src="js/fore/modernizr.custom.js"></script>
-    <link href="css/fore/foreStyle1.css" rel="stylesheet">
+    <link href="css/fore/foreStyle.css" rel="stylesheet">
     <link href="css/fore/foreBody.css" rel="stylesheet">
     <link href="css/record/record.css" rel="stylesheet">
     <script>
