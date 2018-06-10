@@ -26,10 +26,35 @@ CREATE TABLE category (
   PRIMARY KEY (id)
 ) ENGINE=INNODB  AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-INSERT INTO category(id, NAME) VALUE(5, "外语学习"); 
-INSERT INTO category(pcid, NAME) VALUE(5, "商务英语"); 
-INSERT INTO category(pcid, NAME) VALUE(5, "中级口译"); 
-INSERT INTO category(NAME) VALUE("IT经典"); 
+INSERT  INTO `category`(`id`,`pcid`,`NAME`) VALUES 
+(5,0,'外语学习'),
+(6,5,'商务英语'),
+(7,5,'中级口译'),
+(8,0,'IT前沿必读'),
+(9,5,'英语基础'),
+(10,8,'大数据'),
+(11,8,'计算机语言'),
+(12,8,'人工智能'),
+(13,0,'琴棋书画'),
+(14,13,'书法'),
+(15,0,'工业生产'),
+(16,0,'娱乐至死'),
+(17,0,'爱的供养'),
+(18,8,'web开发'),
+(19,5,'日语'),
+(20,16,'漫画'),
+(21,16,'游戏'),
+(22,15,'自动化'),
+(23,15,'数控'),
+(24,15,'材料'),
+(25,15,'设计'),
+(26,13,'诗词'),
+(27,13,'美食'),
+(28,15,'电工电子'),
+(29,13,'棋'),
+(30,13,'书'),
+(31,13,'画'),
+(32,17,'他山之石可以攻玉');
 
 CREATE TABLE product (
   id INT(11) NOT NULL AUTO_INCREMENT,
@@ -44,22 +69,16 @@ CREATE TABLE product (
   PRIMARY KEY (id),
   CONSTRAINT fk_product_category FOREIGN KEY (cid) REFERENCES category (id)
 ) ENGINE=INNODB  DEFAULT CHARSET=utf8;
+INSERT  INTO `product`(`id`,`NAME`,`subTitle`,`originalPrice`,`promotePrice`,`stock`,`STATUS`,`cid`,`createDate`) VALUES 
+(1,'实战口译','（林超伦）实战口译',666,666,66,'上架',7,'2018-05-31 18:40:22'),
+(2,'商务英语','英语考试口语',666,666,66,'上架',6,'2018-05-31 16:15:49'),
+(3,'新概念英语','英语考试口语',666,666,66,'上架',9,'2018-05-31 16:14:36'),
+(6,'Hadoop数据分析平台','IT经典',888,88,88,'上架',10,'2018-05-31 18:42:33'),
+(7,'毛笔','书法全集',944,838,12,'上架',14,'2018-05-31 17:17:53'),
+(8,'JavaEE（黑马）','Java企业级应用',1,1,1,'上架',18,'2018-05-31 19:51:53'),
+(9,'日语合集','日语合集',1,1,1,'上架',19,'2018-05-31 19:45:28'),
+(10,'万词班','万词班',1,1,1,'上架',9,'2018-05-31 19:49:07');
 
-INSERT INTO product(NAME, subTitle, originalPrice, promotePrice, stock, cid, createDate) VALUE("某江口译","英语考试口语",666,666,66,5,'2018-04-13 16:43:32');
-INSERT INTO product(NAME, subTitle, originalPrice, promotePrice, stock, cid, createDate) VALUE("商务英语","英语考试口语",666,666,66,5,'2018-04-13 16:43:32');
-INSERT INTO product(NAME, subTitle, originalPrice, promotePrice, stock, cid, createDate) VALUE("新概念英语","英语考试口语",666,666,66,5,'2018-05-12 16:43:32');
-INSERT INTO product(NAME, subTitle, originalPrice, promotePrice, stock, cid, createDate) VALUE("某江N2","英语考试口语",888,88,88,5, '2018-05-12 16:43:32');
-INSERT INTO product(NAME, subTitle, originalPrice, promotePrice, stock, cid, createDate) VALUE("商务日语","英语考试口语",888,88,88,5, '2018-04-13 16:43:32');
-
-INSERT INTO product(NAME, subTitle, originalPrice, promotePrice, stock, cid, createDate) VALUE("大数据","IT经典",888,88,88,8, '2018-04-13 16:43:32');
-
-INSERT INTO product(NAME, subTitle, originalPrice, promotePrice, stock, cid, createDate) VALUE("某江口译","英语考试口语",666,666,66,5,'2018-04-13 16:43:32');
-INSERT INTO product(NAME, subTitle, originalPrice, promotePrice, stock, cid, createDate) VALUE("商务英语","英语考试口语",666,666,66,5,'2018-04-13 16:43:32');
-INSERT INTO product(NAME, subTitle, originalPrice, promotePrice, stock, cid, createDate) VALUE("新概念英语","英语考试口语",666,666,66,5,'2018-05-12 16:43:32');
-INSERT INTO product(NAME, subTitle, originalPrice, promotePrice, stock, cid, createDate) VALUE("某江N2","英语考试口语",888,88,88,5, '2018-05-12 16:43:32');
-INSERT INTO product(NAME, subTitle, originalPrice, promotePrice, stock, cid, createDate) VALUE("商务日语","英语考试口语",888,88,88,5, '2018-04-13 16:43:32');
-
-INSERT INTO product(NAME, subTitle, originalPrice, promotePrice, stock, cid, createDate) VALUE("大数据","IT经典",888,88,88,8, '2018-04-13 16:43:32');
 
 CREATE TABLE order_ (
   id INT(11) NOT NULL AUTO_INCREMENT,
@@ -104,13 +123,24 @@ CREATE TABLE propertyvalue (
   CONSTRAINT fk_propertyvalue_product FOREIGN KEY (pid) REFERENCES product (id)
 ) ENGINE=INNODB  DEFAULT CHARSET=utf8;
 
-CREATE TABLE productimage (
-  id INT(11) NOT NULL AUTO_INCREMENT,
-  pid INT(11) DEFAULT NULL,
-  TYPE VARCHAR(255) DEFAULT NULL,
-  PRIMARY KEY (id),
-  CONSTRAINT fk_productimage_product FOREIGN KEY (pid) REFERENCES product (id)
-) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `productextension` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `pid` INT(11) DEFAULT NULL,
+  `TYPE` VARCHAR(255) DEFAULT NULL,
+  `pansource` VARCHAR(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_extension` (`pid`),
+  CONSTRAINT `fk_extension` FOREIGN KEY (`pid`) REFERENCES `product` (`id`)
+) ENGINE=INNODB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 
+INSERT  INTO `productextension`(`id`,`pid`,`TYPE`,`pansource`) VALUES 
+(1,8,'jpg','链接：https://pan.baidu.com/s/1nw_chqXtyHrELSizGpbCkA 密码：t1gp'),
+(2,1,'jpg','链接：https://pan.baidu.com/s/1zDaBHXICJqiOn4Qz-xW1pA 密码：mh8j'),
+(3,2,'jpg','链接：https://pan.baidu.com/s/1Tde8IoYomu3_Vjxz3VPc1A 密码：8430'),
+(4,3,'jpg','链接：https://pan.baidu.com/s/1u-5v8YeI8xVUt52Kr3q9Gg 密码：dzdg'),
+(5,6,'jpg','链接：https://pan.baidu.com/s/16ljpHoC2HqiB3an0-OCrog 密码：mber'),
+(6,7,'jpg','链接：https://pan.baidu.com/s/1sY5RezY9Gqj-AFLGQjizAw 密码：iupa'),
+(7,9,'jpg','链接：https://pan.baidu.com/s/1bqJm0gAJB5nQvUPOpuKPaA 密码：cxe3'),
+(8,10,'jpg','链接：https://pan.baidu.com/s/1mBTXyzbsQwKPEPOk9XNVlA 密码：5xff');
 
