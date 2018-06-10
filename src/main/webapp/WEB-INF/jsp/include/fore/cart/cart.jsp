@@ -54,11 +54,11 @@
                 <tr>
                     <td class="checked"><input class="check-one check" type="checkbox"/></td>
                     <td class="goods"><img src="/images/productsImage/${o.product.id}.jpg" alt=""/><span>${o.product.name}</span></td>
-                    <td class="cartProductPrice">${o.product.originalPrice}</td>
-                    <td class="count">
-                        <span class="reduce">-</span>
+                    <td class="cartProductPrice" style="width: 130px">${o.product.originalPrice}</td>
+                    <td class="count" >
+                        <div class="reduce">-</div>
                         <input class="count-input" type="text" value=${o.number} />
-                        <span class="add">+</span></td>
+                        <div class="add">+</div></td>
                     <td class="subtotal" >${o.subTotal}</td>
                     <td class="operation"><span class="delete">删除</span></td>
                     <td class="pid" hidden="hidden"><input type="text" value=${o.product.id}></input></td>
